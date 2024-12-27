@@ -11,7 +11,7 @@ export const useAuthStore = defineStore('auth', () => {
   const lastLoginAttemptEmail = ref<string | null>(null)
   const currentUser = ref<CurrentUser | null>(null)
   const lastLoggedInUser = useCookie<CurrentUser | null>('lastLoggedInUser')
-  const isAuthenticated = computed<boolean>(() => currentUser.value === null)
+  const isAuthenticated = computed<boolean>(() => currentUser.value !== null)
 
   async function getLoginUrl(): Promise<string> {
     return await oAuthClient.getLoginUrl()

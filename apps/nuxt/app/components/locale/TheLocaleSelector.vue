@@ -32,12 +32,13 @@ const dropdownItems = computed<DropdownMenuItem[]>(() => {
     popover-align="end"
   >
     <template #trigger>
-      <button class="flex items-center gap-1 px-2 py-1 font-medium uppercase text-white">
+      <button class="flex items-center gap-1 px-2 py-1 font-medium uppercase text-white text-sm">
         <span>
           {{ locale }}
         </span>
         <VcIcon
           icon="chevronDown"
+          class="size-lg"
         />
       </button>
     </template>

@@ -1,7 +1,7 @@
 import { useGlobalI18n } from '@base/composables/i18n/useGlobaI18n'
 import { useAuthStore } from '@base/stores/auth.store'
 import { getEnv } from '@base/utils/env/getEnv.utils'
-import type { AppRouter } from '@payload/trpc/router/trcp.router'
+import type { AppRouter } from '@payload/trpc/router/trpc.router'
 import {
   createTRPCProxyClient,
   httpBatchLink,
@@ -20,13 +20,15 @@ export function useTrpc() {
 
           headers['Accept-Language'] = locale.value
 
-          try {
-            const token = await authStore.getToken()
+          if (authStore.isAuthenticated) {
+            try {
+              const token = await authStore.getToken()
 
-            headers.Authorization = `Bearer ${token}`
-          }
-          catch {
-            authStore.logout()
+              headers.Authorization = `Bearer ${token}`
+            }
+            catch {
+              authStore.logout()
+            }
           }
 
           return headers

@@ -41,6 +41,7 @@ export default buildConfig({
   cors: [
     'http://localhost:3000',
     'http://localhost:5173',
+    'http://localhost:3000/',
   ],
   routes: {
     admin: '/',

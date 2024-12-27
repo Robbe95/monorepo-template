@@ -102,6 +102,9 @@ export interface Page {
   seo?: {
     title?: string | null;
     description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
     image?: (string | null) | Image;
   };
   updatedAt: string;
@@ -504,114 +507,12 @@ export interface PagesSelect<T extends boolean = true> {
   blocks?:
     | T
     | {
-        hero?:
-          | T
-          | {
-              title?: T;
-              text?: T;
-              ctas?:
-                | T
-                | {
-                    cta?:
-                      | T
-                      | {
-                          label?: T;
-                          link?: T;
-                        };
-                    id?: T;
-                  };
-              backgroundImage?: T;
-              id?: T;
-              blockName?: T;
-            };
-        carousel?:
-          | T
-          | {
-              images?: T;
-              id?: T;
-              blockName?: T;
-            };
-        column?:
-          | T
-          | {
-              columns?:
-                | T
-                | {
-                    block?:
-                      | T
-                      | {
-                          columnMultipleText?:
-                            | T
-                            | {
-                                texts?:
-                                  | T
-                                  | {
-                                      subtitle?: T;
-                                      text?: T;
-                                      id?: T;
-                                    };
-                                ctas?:
-                                  | T
-                                  | {
-                                      cta?:
-                                        | T
-                                        | {
-                                            label?: T;
-                                            link?: T;
-                                          };
-                                      id?: T;
-                                    };
-                                id?: T;
-                                blockName?: T;
-                              };
-                          columnTextCta?:
-                            | T
-                            | {
-                                title?: T;
-                                text?: T;
-                                ctas?:
-                                  | T
-                                  | {
-                                      cta?:
-                                        | T
-                                        | {
-                                            label?: T;
-                                            link?: T;
-                                          };
-                                      id?: T;
-                                    };
-                                id?: T;
-                                blockName?: T;
-                              };
-                        };
-                    id?: T;
-                  };
-              id?: T;
-              blockName?: T;
-            };
-        'hubspot-form'?:
-          | T
-          | {
-              hubspotForm?: T;
-              id?: T;
-              blockName?: T;
-            };
-        'image-text'?:
-          | T
-          | {
-              title?: T;
-              text?: T;
-              id?: T;
-              blockName?: T;
-            };
-        text?:
-          | T
-          | {
-              title?: T;
-              text?: T;
-              id?: T;
-              blockName?: T;
-            };
+        hero?: T | HeroBlockSelect<T>;
+        carousel?: T | CarouselBlockSelect<T>;
+        column?: T | ColumnBlockSelect<T>;
+        'hubspot-form'?: T | HubspotFormBlockSelect<T>;
+        'image-text'?: T | ImageTextBlockSelect<T>;
+        text?: T | TextBlockSelect<T>;
       };
   seo?:
     | T
@@ -626,6 +527,135 @@ export interface PagesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroBlock_select".
+ */
+export interface HeroBlockSelect<T extends boolean = true> {
+  title?: T;
+  text?: T;
+  ctas?:
+    | T
+    | {
+        cta?:
+          | T
+          | {
+              label?: T;
+              link?: T;
+            };
+        id?: T;
+      };
+  backgroundImage?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CarouselBlock_select".
+ */
+export interface CarouselBlockSelect<T extends boolean = true> {
+  images?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ColumnBlock_select".
+ */
+export interface ColumnBlockSelect<T extends boolean = true> {
+  columns?: T | ColumnBlocksSelect<T>;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ColumnBlocks_select".
+ */
+export interface ColumnBlocksSelect<T extends boolean = true> {
+  block?:
+    | T
+    | {
+        columnMultipleText?: T | ColumnMultipleTextBlockSelect<T>;
+        columnTextCta?: T | ColumnTextCtaBlockSelect<T>;
+      };
+  id?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ColumnMultipleTextBlock_select".
+ */
+export interface ColumnMultipleTextBlockSelect<T extends boolean = true> {
+  texts?:
+    | T
+    | {
+        subtitle?: T;
+        text?: T;
+        id?: T;
+      };
+  ctas?:
+    | T
+    | {
+        cta?:
+          | T
+          | {
+              label?: T;
+              link?: T;
+            };
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ColumnTextCtaBlock_select".
+ */
+export interface ColumnTextCtaBlockSelect<T extends boolean = true> {
+  title?: T;
+  text?: T;
+  ctas?:
+    | T
+    | {
+        cta?:
+          | T
+          | {
+              label?: T;
+              link?: T;
+            };
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HubspotFormBlock_select".
+ */
+export interface HubspotFormBlockSelect<T extends boolean = true> {
+  hubspotForm?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ImageTextBlock_select".
+ */
+export interface ImageTextBlockSelect<T extends boolean = true> {
+  title?: T;
+  text?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TextBlock_select".
+ */
+export interface TextBlockSelect<T extends boolean = true> {
+  title?: T;
+  text?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "form-builder_select".
  */
 export interface FormBuilderSelect<T extends boolean = true> {
@@ -633,39 +663,37 @@ export interface FormBuilderSelect<T extends boolean = true> {
   builder?:
     | T
     | {
-        'form-input-block'?:
-          | T
-          | {
-              label?: T;
-              isRequired?: T;
-              type?: T;
-              id?: T;
-              blockName?: T;
-            };
-        'form-grid-block'?:
-          | T
-          | {
-              colums?: T;
-              blocks?:
-                | T
-                | {
-                    'form-input-block'?:
-                      | T
-                      | {
-                          label?: T;
-                          isRequired?: T;
-                          type?: T;
-                          id?: T;
-                          blockName?: T;
-                        };
-                  };
-              id?: T;
-              blockName?: T;
-            };
+        'form-input-block'?: T | FormInputBlockSelect<T>;
+        'form-grid-block'?: T | FormGridBlockSelect<T>;
       };
   submissions?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FormInputBlock_select".
+ */
+export interface FormInputBlockSelect<T extends boolean = true> {
+  label?: T;
+  isRequired?: T;
+  type?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FormGridBlock_select".
+ */
+export interface FormGridBlockSelect<T extends boolean = true> {
+  colums?: T;
+  blocks?:
+    | T
+    | {
+        'form-input-block'?: T | FormInputBlockSelect<T>;
+      };
+  id?: T;
+  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -857,6 +885,9 @@ export interface HomePage {
   seo?: {
     title?: string | null;
     description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
     image?: (string | null) | Image;
   };
   _status?: ('draft' | 'published') | null;
@@ -901,114 +932,12 @@ export interface HomePageSelect<T extends boolean = true> {
   blocks?:
     | T
     | {
-        hero?:
-          | T
-          | {
-              title?: T;
-              text?: T;
-              ctas?:
-                | T
-                | {
-                    cta?:
-                      | T
-                      | {
-                          label?: T;
-                          link?: T;
-                        };
-                    id?: T;
-                  };
-              backgroundImage?: T;
-              id?: T;
-              blockName?: T;
-            };
-        carousel?:
-          | T
-          | {
-              images?: T;
-              id?: T;
-              blockName?: T;
-            };
-        column?:
-          | T
-          | {
-              columns?:
-                | T
-                | {
-                    block?:
-                      | T
-                      | {
-                          columnMultipleText?:
-                            | T
-                            | {
-                                texts?:
-                                  | T
-                                  | {
-                                      subtitle?: T;
-                                      text?: T;
-                                      id?: T;
-                                    };
-                                ctas?:
-                                  | T
-                                  | {
-                                      cta?:
-                                        | T
-                                        | {
-                                            label?: T;
-                                            link?: T;
-                                          };
-                                      id?: T;
-                                    };
-                                id?: T;
-                                blockName?: T;
-                              };
-                          columnTextCta?:
-                            | T
-                            | {
-                                title?: T;
-                                text?: T;
-                                ctas?:
-                                  | T
-                                  | {
-                                      cta?:
-                                        | T
-                                        | {
-                                            label?: T;
-                                            link?: T;
-                                          };
-                                      id?: T;
-                                    };
-                                id?: T;
-                                blockName?: T;
-                              };
-                        };
-                    id?: T;
-                  };
-              id?: T;
-              blockName?: T;
-            };
-        'hubspot-form'?:
-          | T
-          | {
-              hubspotForm?: T;
-              id?: T;
-              blockName?: T;
-            };
-        'image-text'?:
-          | T
-          | {
-              title?: T;
-              text?: T;
-              id?: T;
-              blockName?: T;
-            };
-        text?:
-          | T
-          | {
-              title?: T;
-              text?: T;
-              id?: T;
-              blockName?: T;
-            };
+        hero?: T | HeroBlockSelect<T>;
+        carousel?: T | CarouselBlockSelect<T>;
+        column?: T | ColumnBlockSelect<T>;
+        'hubspot-form'?: T | HubspotFormBlockSelect<T>;
+        'image-text'?: T | ImageTextBlockSelect<T>;
+        text?: T | TextBlockSelect<T>;
       };
   seo?:
     | T
@@ -1033,13 +962,7 @@ export interface SettingsSelect<T extends boolean = true> {
         socials?:
           | T
           | {
-              social?:
-                | T
-                | {
-                    name?: T;
-                    url?: T;
-                    icon?: T;
-                  };
+              social?: T | SocialSelect<T>;
               id?: T;
             };
       };
@@ -1052,6 +975,15 @@ export interface SettingsSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Social_select".
+ */
+export interface SocialSelect<T extends boolean = true> {
+  name?: T;
+  url?: T;
+  icon?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

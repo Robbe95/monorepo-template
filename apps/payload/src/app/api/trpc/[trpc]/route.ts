@@ -1,6 +1,6 @@
 /* eslint-disable check-file/folder-naming-convention */
 import { createContext } from '@payload/trpc/context/context'
-import { appRouter } from '@payload/trpc/router/trcp.router'
+import { appRouter } from '@payload/trpc/router/trpc.router'
 import { fetchRequestHandler } from '@trpc/server/adapters/fetch'
 
 function handler(request: Request) {

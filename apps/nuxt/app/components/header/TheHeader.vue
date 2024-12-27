@@ -9,12 +9,12 @@ const { t } = useI18n()
     <div class="bg-brand-primary text-brand-primary">
       <div class="container mx-auto px-4 py-2">
         <div class="flex items-center gap-2">
-          <span class="text-caption !text-gray-400">
+          <span class="text-xs text-gray-400">
             {{ t('app.header.compatible_with_vektron') }}
           </span>
           <VcIcon
             icon="chevronRight"
-            size="sm"
+            class="size-lg"
           />
         </div>
       </div>

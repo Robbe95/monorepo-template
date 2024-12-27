@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useTheme } from '@base/composables/theme/theme.composable'
 import {
   VcConfigProvider,
   VcDialogContainer,
@@ -11,6 +12,7 @@ function useIdFunction() {
   return useId()
 }
 
+const { theme } = useTheme()
 const locale = useI18n().locale
 </script>
 
@@ -20,7 +22,8 @@ const locale = useI18n().locale
       <ConfigProvider :use-id="useIdFunction">
         <VcConfigProvider :locale="locale">
           <VcThemeProvider
-            theme="light"
+            :theme="theme"
+            :is-dark-mode-enabled="false"
             class="flex size-full flex-1 flex-col"
           >
             <NuxtLoadingIndicator color="#FFFFFF" />

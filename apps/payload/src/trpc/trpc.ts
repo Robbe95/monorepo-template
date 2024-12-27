@@ -8,7 +8,7 @@
  * @see https://trpc.io/docs/server/procedures
  */
 import type { Context } from '@payload/trpc/context/context'
-import type { appRouter } from '@payload/trpc/router/trcp.router'
+import type { appRouter } from '@payload/trpc/router/trpc.router'
 import { initTRPC } from '@trpc/server'
 
 export const t = initTRPC

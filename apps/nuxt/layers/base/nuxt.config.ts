@@ -11,10 +11,7 @@ export default defineNuxtConfig({
   ],
   css: [
     '@wisemen/vue-core/style.css',
-    '@base/assets/styles/index.css',
-    '@base/assets/styles/colors.css',
-    '@base/assets/styles/variables.css',
-    '@base/assets/styles/fonts.css',
+    '@base/assets/styles/base.css',
   ],
   experimental: {
     viewTransition: true,
@@ -41,11 +38,10 @@ export default defineNuxtConfig({
   modules: [
     '@nuxtjs/i18n',
     '@vueuse/nuxt',
-    '@nuxtjs/color-mode',
     '@pinia/nuxt',
     '@nuxt/fonts',
     'nuxt-time',
-    '@nuxtjs/tailwindcss',
+    'nuxt-tailwindcss4',
   ],
   runtimeConfig: {
     public: {
