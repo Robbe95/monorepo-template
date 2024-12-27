@@ -1,0 +1,96 @@
+<script setup lang="ts">
+import { useHubspotFormMutation } from '@cms/api/mutation/useHubspotFormMutation'
+import type { HubspotForm } from '@cms/types/hubspotForm.type'
+import { makeHubspotFormZodSchema } from '@cms/utils/makeHubspotForm.util'
+import { VcButton } from '@wisemen/vue-core'
+import { useForm } from 'formango'
+
+const props = defineProps<{
+  hubspotForm: HubspotForm
+}>()
+
+const hubspotZodSchema = makeHubspotFormZodSchema(props.hubspotForm)
+const hubspotFormMutation = useHubspotFormMutation()
+const { form, onSubmitForm } = useForm({
+  schema: hubspotZodSchema,
+})
+
+const isSubmitted = ref<boolean>(false)
+
+onSubmitForm(async (data) => {
+  /*
+   * Reform group0.firstname etc to just flat firstname: 'name', ...
+   */
+
+  const reformedData: Record<string, any> = {}
+
+  Object.keys(data).forEach((groupName) => {
+    const group = data[groupName]
+
+    Object.keys(group).forEach((fieldName) => {
+      reformedData[fieldName] = group[fieldName]
+    })
+  })
+
+  await hubspotFormMutation.mutateAsync({
+    formId: props.hubspotForm.id,
+    data: reformedData,
+  })
+
+  isSubmitted.value = true
+})
+</script>
+
+<template>
+  <AppHeightTransition>
+    <div
+      v-if="!isSubmitted"
+      class="flex flex-col gap-4"
+    >
+      <h2 class="text-xl">
+        {{ hubspotForm.name }}
+      </h2>
+
+      <div
+        v-for="(fieldGroup, index) in hubspotForm.fieldGroups"
+        :key="index"
+      >
+        <BlocksHubspotFormGroup
+          :index="index"
+          :field-group="fieldGroup"
+          :form="form"
+        />
+      </div>
+      <div
+        id="privacy-text"
+      >
+        <div v-html="hubspotForm.legalConsentOptions.privacyText" />
+      </div>
+      <div class="flex justify-end">
+        <VcButton
+          :is-loading="form.isSubmitting"
+          @click="form.submit"
+        >
+          {{ hubspotForm.displayOptions.submitButtonText }}
+        </VcButton>
+      </div>
+    </div>
+    <div
+      v-else
+      class="flex flex-col items-center justify-center gap-4"
+    >
+      <AppEmptyState icon="checkmarkCircle">
+        <AppEmptyStateTitle>
+          <div v-html="hubspotForm.configuration.postSubmitAction.value" />
+        </AppEmptyStateTitle>
+      </AppEmptyState>
+    </div>
+  </AppHeightTransition>
+</template>
+
+<style>
+#privacy-text a {
+
+  text-decoration: underline
+}
+</style>
