@@ -5,6 +5,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-11-07',
 
   alias: {
+    '@': path.resolve(__dirname, './disable'),
     '@@': path.resolve(__dirname, './disable'),
     '@payload': path.resolve(__dirname, '../payload/src'),
     '@payload-config': path.resolve(__dirname, '../payload/payload.config.ts'),

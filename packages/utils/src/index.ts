@@ -1,3 +1,3 @@
-export * from './utils/convertLocale.util'
-export * from './utils/generateUuid.util'
-export * from './utils/toCapitalize.util'
+export * from './utils/convert-locale/convertLocale.util'
+export * from './utils/generate-uuid/generateUuid.util'
+export * from './utils/to-capitalize/toCapitalize.util'
