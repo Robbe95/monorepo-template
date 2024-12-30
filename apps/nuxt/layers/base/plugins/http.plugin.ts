@@ -1,4 +1,4 @@
-import { createHttpZodClient } from '@base/libs/httpZodClient.lib'
+import { createHttpZodClient } from '~base/libs/httpZodClient.lib'
 
 export default defineNuxtPlugin({
   dependsOn: [

@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import SvgGridBackground from '@base/components/svg/SvgGridBackground.vue'
 import { type Icon, VcIcon } from '@wisemen/vue-core'
+
+import SvgGridBackground from '~base/components/svg/SvgGridBackground.vue'
 
 interface Props {
   icon: Icon

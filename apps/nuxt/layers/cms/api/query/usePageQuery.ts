@@ -1,7 +1,7 @@
-import { useTrpc } from '@base/composables/api/useTrpc'
-import { useGlobalI18n } from '@base/composables/i18n/useGlobaI18n'
-import { useQuery } from '@base/composables/query/useQuery'
-import { pageQueryKey } from '@root/layers/cms/api/query-key/page.queryKey'
+import { useTrpc } from '~base/composables/api/useTrpc'
+import { useGlobalI18n } from '~base/composables/i18n/useGlobaI18n'
+import { useQuery } from '~base/composables/query/useQuery'
+import { pageQueryKey } from '~root/layers/cms/api/query-key/page.queryKey'
 
 export function usePageQuery({ slug }: { slug: string }) {
   const trpc = useTrpc()

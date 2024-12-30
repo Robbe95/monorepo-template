@@ -7,11 +7,4 @@ export default [
       'ts/explicit-function-return-type': 'off',
     },
   },
-  {
-    ignores: [
-      '**/app/(payload)',
-      '**/migrations',
-      '**/payload-types.ts',
-    ],
-  },
 ]

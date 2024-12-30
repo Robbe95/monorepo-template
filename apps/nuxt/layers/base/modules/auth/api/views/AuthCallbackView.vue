@@ -1,7 +1,8 @@
 <script lang="ts" setup>
-import { useAuthStore } from '@base/stores/auth.store'
 import { useToast } from '@wisemen/vue-core'
 import { useI18n } from 'vue-i18n'
+
+import { useAuthStore } from '~base/stores/auth.store'
 
 const i18n = useI18n()
 const authStore = useAuthStore()

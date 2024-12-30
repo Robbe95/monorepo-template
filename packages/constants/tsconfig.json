@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "incremental": true,
     "target": "ES2017",
     "jsx": "preserve",
     "lib": [
@@ -11,11 +10,6 @@
     "baseUrl": ".",
     "module": "esnext",
     "moduleResolution": "bundler",
-    "paths": {
-      "@/*": [
-        "./src/*"
-      ]
-    },
     "resolveJsonModule": true,
     "allowJs": true,
     "strict": true,
@@ -23,7 +17,6 @@
     "esModuleInterop": true,
     "isolatedModules": true,
     "skipLibCheck": true
-
   },
   "include": [
     "src/**/*.ts"

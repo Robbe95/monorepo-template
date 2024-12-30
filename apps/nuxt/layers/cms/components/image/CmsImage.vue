@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { getEnv } from '@base/utils/env/getEnv.utils'
 import type { Image } from '@payload/payload-types'
+
+import { getEnv } from '~base/utils/env/getEnv.utils'
 
 interface Props {
   image: string | Image

@@ -1,9 +1,10 @@
-import { getEnv } from '@base/utils/env/getEnv.utils'
 import {
   ready,
   subscribe,
   unsubscribe,
 } from '@payloadcms/live-preview'
+
+import { getEnv } from '~base/utils/env/getEnv.utils'
 /**
  * Vue composable to implement Payload CMS Live Preview.
  *

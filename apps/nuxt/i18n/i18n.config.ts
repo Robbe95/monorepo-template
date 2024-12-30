@@ -1,6 +1,6 @@
-import en from '@root/i18n/locales/en.json'
-import fr from '@root/i18n/locales/fr.json'
-import nl from '@root/i18n/locales/nl.json'
+import en from '~root/i18n/locales/en.json'
+import fr from '~root/i18n/locales/fr.json'
+import nl from '~root/i18n/locales/nl.json'
 
 export default defineI18nConfig(() => ({
   defaultLocale: 'nl',

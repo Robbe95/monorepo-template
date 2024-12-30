@@ -1,8 +1,9 @@
-import { useOFetchStrategy } from '@base/utils/auth/fetchStrategy'
-import { cookieTokensStrategy } from '@base/utils/auth/tokensStrategy'
-import { getEnv } from '@base/utils/env/getEnv.utils'
 import { ZitadelClient } from '@wisemen/vue-core-auth'
 import type { $Fetch, FetchOptions } from 'ofetch'
+
+import { useOFetchStrategy } from '~base/utils/auth/fetchStrategy'
+import { cookieTokensStrategy } from '~base/utils/auth/tokensStrategy'
+import { getEnv } from '~base/utils/env/getEnv.utils'
 
 export function addAuthorizationHeader(
   token: string,

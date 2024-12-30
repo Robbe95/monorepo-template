@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { useAuthStore } from '@base/stores/auth.store'
 import { useToast, VcButton } from '@wisemen/vue-core'
 import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+
+import { useAuthStore } from '~base/stores/auth.store'
 
 const authStore = useAuthStore()
 

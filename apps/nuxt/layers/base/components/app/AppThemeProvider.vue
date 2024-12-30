@@ -1,9 +1,10 @@
 <script setup lang="ts">
+import { isClient } from '@vueuse/core'
+
 import {
   injectThemeProviderContext,
   provideThemeProviderContext,
-} from '@base/context/theme.context'
-import { isClient } from '@vueuse/core'
+} from '~base/context/theme.context'
 
 // TODO: Update when vue core updates
 const props = withDefaults(defineProps<{

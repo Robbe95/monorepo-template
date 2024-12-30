@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import AppCheckboxGroup from '@base/components/app/AppCheckboxGroup.vue'
 import type {
   HubspotField,
 } from '@cms/types/hubspotForm.type'
 import type { RadioGroupItem } from '@wisemen/vue-core'
 import { VcInputFieldLabel } from '@wisemen/vue-core'
 import type { Field } from 'formango'
+
+import AppCheckboxGroup from '~base/components/app/AppCheckboxGroup.vue'
 
 interface Props {
   formField: Field<any, any>

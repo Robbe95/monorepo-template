@@ -1,11 +1,12 @@
-import { useGlobalI18n } from '@base/composables/i18n/useGlobaI18n'
-import { useAuthStore } from '@base/stores/auth.store'
-import { getEnv } from '@base/utils/env/getEnv.utils'
 import type { AppRouter } from '@payload/trpc/router/trpc.router'
 import {
   createTRPCProxyClient,
   httpBatchLink,
 } from '@trpc/client'
+
+import { useGlobalI18n } from '~base/composables/i18n/useGlobaI18n'
+import { useAuthStore } from '~base/stores/auth.store'
+import { getEnv } from '~base/utils/env/getEnv.utils'
 
 export function useTrpc() {
   const { CMS_BASE_URL } = getEnv()

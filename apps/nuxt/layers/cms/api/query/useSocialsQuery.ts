@@ -1,7 +1,8 @@
-import { useTrpc } from '@base/composables/api/useTrpc'
-import { useGlobalI18n } from '@base/composables/i18n/useGlobaI18n'
-import { useQuery } from '@base/composables/query/useQuery'
 import { settingsQueryKey } from '@cms/api/query-key/settings.queryKey'
+
+import { useTrpc } from '~base/composables/api/useTrpc'
+import { useGlobalI18n } from '~base/composables/i18n/useGlobaI18n'
+import { useQuery } from '~base/composables/query/useQuery'
 
 export function useSocialsQuery() {
   const trpc = useTrpc()

@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import AppLogo from '@base/components/app/AppLogo.vue'
-
 import { NuxtLinkLocale } from '#components'
+import AppLogo from '~base/components/app/AppLogo.vue'
 </script>
 
 <template>

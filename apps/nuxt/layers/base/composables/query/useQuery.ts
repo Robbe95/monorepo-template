@@ -1,4 +1,3 @@
-import { useClientOnlyQuery } from '@base/composables/query/useClientOnlyQuery'
 import {
   type DefaultError,
   type QueryClient,
@@ -8,6 +7,8 @@ import {
   type UseQueryOptions,
   type UseQueryReturnType,
 } from '@tanstack/vue-query'
+
+import { useClientOnlyQuery } from '~base/composables/query/useClientOnlyQuery'
 
 export function useQuery<
   TQueryFnData,

@@ -6,13 +6,13 @@ export default defineNuxtConfig({
 
   alias: {
     '@@': path.resolve(__dirname, './disable'),
-    '@base': path.resolve(__dirname, './layers/base'),
-    '@cms': path.resolve(__dirname, './layers/cms'),
     '@payload': path.resolve(__dirname, '../payload/src'),
     '@payload-config': path.resolve(__dirname, '../payload/payload.config.ts'),
     '@payload-types': path.resolve(__dirname, '../payload'),
-    '@root': path.resolve(__dirname, './'),
     '~~': path.resolve(__dirname, './disable'),
+    '~base': path.resolve(__dirname, './layers/base'),
+    '~cms': path.resolve(__dirname, './layers/cms'),
+    '~root': path.resolve(__dirname, './'),
   },
 
   app: {

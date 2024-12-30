@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import HeaderLogo from '@/components/header/HeaderLogo.vue'
-import TheLocaleSelector from '@/components/locale/TheLocaleSelector.vue'
 import { NuxtLinkLocale } from '#components'
+import HeaderLogo from '~/components/header/HeaderLogo.vue'
+import TheLocaleSelector from '~/components/locale/TheLocaleSelector.vue'
 
 const { t } = useI18n()
 </script>

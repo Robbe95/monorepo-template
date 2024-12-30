@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useTheme } from '@base/composables/theme/theme.composable'
 import {
   VcConfigProvider,
   VcDialogContainer,
@@ -13,6 +12,7 @@ import {
   NuxtLoadingIndicator,
   NuxtPage,
 } from '#components'
+import { useTheme } from '~base/composables/theme/theme.composable'
 
 function useIdFunction() {
   return useId()

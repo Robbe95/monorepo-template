@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { translateLocale } from '@base/translations/locale.translate'
 import {
   type DropdownMenuItem,
   VcDropdownMenu,
   VcIcon,
 } from '@wisemen/vue-core'
+
+import { translateLocale } from '~base/translations/locale.translate'
 
 const { locale, locales } = useI18n()
 

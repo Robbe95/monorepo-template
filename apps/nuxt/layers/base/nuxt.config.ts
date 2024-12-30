@@ -2,7 +2,7 @@ export default defineNuxtConfig({
   components: [],
   css: [
     '@wisemen/vue-core/style.css',
-    '@base/assets/styles/base.css',
+    '~base/assets/styles/base.css',
   ],
   experimental: {
     viewTransition: true,

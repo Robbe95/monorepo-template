@@ -1,4 +1,4 @@
-import type { NavigationLink } from '@/types/navigation/navigationLink.type'
+import type { NavigationLink } from '~/types/navigation/navigationLink.type'
 
 export const FOOTER_LINKS = [
   {

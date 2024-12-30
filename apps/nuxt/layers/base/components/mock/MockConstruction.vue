@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import AppCard from '@base/components/app/AppCard.vue'
+import AppCard from '~base/components/app/AppCard.vue'
 
 const { t } = useI18n()
 </script>

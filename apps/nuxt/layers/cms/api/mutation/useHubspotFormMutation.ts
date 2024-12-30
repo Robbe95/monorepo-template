@@ -1,6 +1,7 @@
-import { getEnv } from '@base/utils/env/getEnv.utils'
 import type { HubspotForm } from '@cms/types/hubspotForm.type'
 import { useMutation } from '@tanstack/vue-query'
+
+import { getEnv } from '~base/utils/env/getEnv.utils'
 
 export function useHubspotFormMutation() {
   const BASE_URL = getEnv().CMS_BASE_URL
