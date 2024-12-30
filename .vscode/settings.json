@@ -15,6 +15,9 @@
   "eslint.workingDirectories": [
     "apps/nuxt",
     "apps/payload",
+    "packages/constants",
+    "packages/utils",
+    "packages/empty",
   ],
 }
 

@@ -1,0 +1,20 @@
+{
+  "name": "@shared/constants",
+  "type": "module",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "@wisemen/eslint-config-vue": "^0.2.3",
+    "eslint": "^9.17.0",
+    "typescript": "5.7.2"
+  }
+}

@@ -1,5 +1,5 @@
 /* eslint-disable perfectionist/sort-objects */
-import { toCapatilize } from '@payload/utils/toCapitalize.util'
+import { toCapatilize } from '@shared/utils'
 import type {
   CollectionConfig,
   CollectionSlug,
