@@ -1,14 +1,5 @@
 export default defineNuxtConfig({
-  components: [
-    {
-      pathPrefix: false,
-      path: '@base/components',
-    },
-    {
-      pathPrefix: false,
-      path: '@base/modules',
-    },
-  ],
+  components: [],
   css: [
     '@wisemen/vue-core/style.css',
     '@base/assets/styles/base.css',
@@ -42,6 +33,7 @@ export default defineNuxtConfig({
     '@nuxt/fonts',
     'nuxt-time',
     'nuxt-tailwindcss4',
+    '@nuxtjs/color-mode',
   ],
   runtimeConfig: {
     public: {

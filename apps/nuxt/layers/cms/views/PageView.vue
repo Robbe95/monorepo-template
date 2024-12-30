@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import BlocksRenderer from '@cms/components/blocks/renderer/BlocksRenderer.vue'
 import type { HomePage, Page } from '@payload/payload-types'
 
 interface Props {

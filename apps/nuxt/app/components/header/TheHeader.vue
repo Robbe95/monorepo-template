@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { VcIcon } from '@wisemen/vue-core'
 
+import HeaderLogo from '@/components/header/HeaderLogo.vue'
+import TheLocaleSelector from '@/components/locale/TheLocaleSelector.vue'
+import { NuxtLinkLocale } from '#components'
+
 const { t } = useI18n()
 </script>
 

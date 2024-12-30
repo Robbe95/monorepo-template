@@ -29,16 +29,7 @@ export default defineNuxtConfig({
     },
   },
 
-  components: [
-    {
-      pathPrefix: false,
-      path: '@/components',
-    },
-    {
-      pathPrefix: false,
-      path: '@/views',
-    },
-  ],
+  components: [],
 
   devtools: { enabled: true },
 

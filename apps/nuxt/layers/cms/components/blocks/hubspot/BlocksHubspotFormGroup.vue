@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import BlocksHubspotFormGroupField from '@cms/components/blocks/hubspot/BlocksHubspotFormGroupField.vue'
 import type { HubspotFieldGroup } from '@cms/types/hubspotForm.type'
 import type { Form } from 'formango'
 

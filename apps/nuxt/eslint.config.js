@@ -15,7 +15,6 @@ export default withNuxt(
   {
     rules: {
       'ts/explicit-function-return-type': 'off',
-      'vue/no-undef-components': 'off',
     },
   },
 )

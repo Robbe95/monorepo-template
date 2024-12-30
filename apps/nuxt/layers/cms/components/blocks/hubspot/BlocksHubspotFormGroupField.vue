@@ -1,6 +1,14 @@
 <script setup lang="ts">
+import BlocksHubspotFormFieldDropdown from '@cms/components/blocks/hubspot/fields/BlocksHubspotFormFieldDropdown.vue'
+import BlocksHubspotFormFieldMultipleCheckbox from '@cms/components/blocks/hubspot/fields/BlocksHubspotFormFieldMultipleCheckbox.vue'
+import BlocksHubspotFormFieldPhone from '@cms/components/blocks/hubspot/fields/BlocksHubspotFormFieldPhone.vue'
+import BlocksHubspotFormFieldRadio from '@cms/components/blocks/hubspot/fields/BlocksHubspotFormFieldRadio.vue'
+import BlocksHubspotFormFieldText from '@cms/components/blocks/hubspot/fields/BlocksHubspotFormFieldText.vue'
+import BlocksHubspotFormFieldTextarea from '@cms/components/blocks/hubspot/fields/BlocksHubspotFormFieldTextarea.vue'
 import type { HubspotField } from '@cms/types/hubspotForm.type'
 import type { Field } from 'formango'
+
+import { NuxtErrorBoundary } from '#components'
 
 interface Props {
   fieldGroupForm: Field<any, any>

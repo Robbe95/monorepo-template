@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import AppContainer from '@base/components/app/AppContainer.vue'
 import AppHeightTransition from '@base/components/app/AppHeightTransition.vue'
 import { useHubspotFormQuery } from '@cms/api/query/useHubspotFormQuery'
+import BlocksHubspotFormSchema from '@cms/components/blocks/hubspot/BlocksHubspotFormSchema.vue'
 import type { HubspotFormBlock } from '@payload/payload-types'
 import { VcSkeletonItem } from '@wisemen/vue-core'
 

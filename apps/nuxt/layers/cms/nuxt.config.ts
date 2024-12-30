@@ -10,16 +10,7 @@ export default defineNuxtConfig({
     '@payload': path.resolve(__dirname, '../payload/src'),
     '@payload-types': path.resolve(__dirname, '../payload'),
   },
-  components: [
-    {
-      pathPrefix: false,
-      path: '@cms/components',
-    },
-    {
-      pathPrefix: false,
-      path: '@cms/views',
-    },
-  ],
+  components: [],
   extends: [
     '../base',
   ],
@@ -27,6 +18,5 @@ export default defineNuxtConfig({
     '/page/**': {
       swr: ONE_HOUR_IN_SECONDS,
     },
-
   },
 })

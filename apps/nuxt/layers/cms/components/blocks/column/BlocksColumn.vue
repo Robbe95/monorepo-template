@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import BlocksColumnRenderer from '@cms/components/blocks/column/BlocksColumnRenderer.vue'
 import type { SingleColumnBlock } from '@cms/types/blocks.type'
 import type { ColumnBlock } from '@payload/payload-types'
 
@@ -20,7 +21,6 @@ const secondColumn = computed<SingleColumnBlock | null>(() => props.block.column
       <!-- <div class="flex mt-40 space-x-14 xl:w-[150%]">
         <AppImageSlider :images="getImages" lazy />
       </div> -->
-
       <div class="grid grid-cols-2 gap-20">
         <div>
           <BlocksColumnRenderer

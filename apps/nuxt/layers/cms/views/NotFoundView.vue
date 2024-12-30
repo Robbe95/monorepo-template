@@ -1,5 +1,5 @@
 <script setup lang="ts">
-
+import MockConstruction from '@base/components/mock/MockConstruction.vue'
 </script>
 
 <template>

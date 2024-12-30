@@ -3,6 +3,9 @@ import { getEnv } from '@base/utils/env/getEnv.utils'
 import { useHomePageQuery } from '@cms/api/query/useHomePageQuery'
 import { useLivePreview } from '@cms/composables/useLivePreview'
 import NotFoundView from '@cms/views/NotFoundView.vue'
+import PageView from '@cms/views/PageView.vue'
+
+import { NuxtErrorBoundary } from '#components'
 
 const { CMS_BASE_URL } = getEnv()
 

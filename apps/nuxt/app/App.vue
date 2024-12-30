@@ -8,6 +8,12 @@ import {
 } from '@wisemen/vue-core'
 import { ConfigProvider } from 'reka-ui'
 
+import {
+  NuxtLayout,
+  NuxtLoadingIndicator,
+  NuxtPage,
+} from '#components'
+
 function useIdFunction() {
   return useId()
 }
@@ -21,11 +27,8 @@ const locale = useI18n().locale
     <div class="w-full">
       <ConfigProvider :use-id="useIdFunction">
         <VcConfigProvider :locale="locale">
-          <VcThemeProvider
-            :theme="theme"
-            :is-dark-mode-enabled="false"
-            class="flex size-full flex-1 flex-col"
-          >
+          <!-- TODO: Update when vue core updates -->
+          <VcThemeProvider :theme="theme">
             <NuxtLoadingIndicator color="#FFFFFF" />
             <NuxtLayout>
               <NuxtPage />
