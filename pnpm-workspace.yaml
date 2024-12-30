@@ -11,7 +11,7 @@ catalog:
   "@payloadcms/db-mongodb": "3.12.0"
   "@payloadcms/db-postgres": "3.12.0"
   "@payloadcms/next": "3.12.0"
-  "@payloadcms/plugin-search": "3.12.0"
+  "@payloadcms/plugin-search": "^3.12.0"
   "@payloadcms/plugin-seo": "^3.12.0"
   "@payloadcms/richtext-lexical": "3.12.0"
   "@payloadcms/richtext-slate": "3.12.0"
