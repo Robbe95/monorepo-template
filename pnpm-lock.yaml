@@ -247,7 +247,7 @@ importers:
         version: 19.0.2(@types/react@19.0.2)
       '@wisemen/eslint-config-vue':
         specifier: ^0.2.3
-        version: 0.2.3(@typescript-eslint/utils@8.18.2)(@vue/compiler-sfc@3.5.13)(eslint@9.17.0)(putout@37.8.2)(tailwindcss@3.4.17)(typescript@5.7.2)
+        version: 0.2.3(@typescript-eslint/utils@8.18.2)(@vue/compiler-sfc@3.5.13)(eslint@9.17.0)(putout@37.8.2)(tailwindcss@3.4.17)(typescript@5.7.2)(vitest@2.1.8)
       eslint:
         specifier: ^9.17.0
         version: 9.17.0
@@ -262,7 +262,7 @@ importers:
     devDependencies:
       '@wisemen/eslint-config-vue':
         specifier: ^0.2.3
-        version: 0.2.3(@typescript-eslint/utils@8.18.2)(@vue/compiler-sfc@3.5.13)(eslint@9.17.0)(putout@37.8.2)(tailwindcss@3.4.17)(typescript@5.7.2)
+        version: 0.2.3(@typescript-eslint/utils@8.18.2)(@vue/compiler-sfc@3.5.13)(eslint@9.17.0)(putout@37.8.2)(tailwindcss@3.4.17)(typescript@5.7.2)(vitest@2.1.8)
       eslint:
         specifier: ^9.17.0
         version: 9.17.0
@@ -274,7 +274,7 @@ importers:
     devDependencies:
       '@wisemen/eslint-config-vue':
         specifier: ^0.2.3
-        version: 0.2.3(@typescript-eslint/utils@8.18.2)(@vue/compiler-sfc@3.5.13)(eslint@9.17.0)(putout@37.8.2)(tailwindcss@3.4.17)(typescript@5.7.2)
+        version: 0.2.3(@typescript-eslint/utils@8.18.2)(@vue/compiler-sfc@3.5.13)(eslint@9.17.0)(putout@37.8.2)(tailwindcss@3.4.17)(typescript@5.7.2)(vitest@2.1.8)
       eslint:
         specifier: ^9.17.0
         version: 9.17.0
@@ -286,13 +286,16 @@ importers:
     devDependencies:
       '@wisemen/eslint-config-vue':
         specifier: ^0.2.3
-        version: 0.2.3(@typescript-eslint/utils@8.18.2)(@vue/compiler-sfc@3.5.13)(eslint@9.17.0)(putout@37.8.2)(tailwindcss@3.4.17)(typescript@5.7.2)
+        version: 0.2.3(@typescript-eslint/utils@8.18.2)(@vue/compiler-sfc@3.5.13)(eslint@9.17.0)(putout@37.8.2)(tailwindcss@3.4.17)(typescript@5.7.2)(vitest@2.1.8)
       eslint:
         specifier: ^9.17.0
         version: 9.17.0
       typescript:
         specifier: 5.7.2
         version: 5.7.2
+      vitest:
+        specifier: 2.1.8
+        version: 2.1.8(sass@1.83.0)
 
 packages:
 
@@ -8309,7 +8312,7 @@ packages:
       - typescript
     dev: false
 
-  /@wisemen/eslint-config-vue@0.2.3(@typescript-eslint/utils@8.18.2)(@vue/compiler-sfc@3.5.13)(eslint@9.17.0)(putout@37.8.2)(tailwindcss@3.4.17)(typescript@5.7.2):
+  /@wisemen/eslint-config-vue@0.2.3(@typescript-eslint/utils@8.18.2)(@vue/compiler-sfc@3.5.13)(eslint@9.17.0)(putout@37.8.2)(tailwindcss@3.4.17)(typescript@5.7.2)(vitest@2.1.8):
     resolution: {integrity: sha512-bLaHjX7Ec9yrWEYISkTIymQF9QKJoHsyhZCN8WaLdj4TlBJUjRoSakxmAUG0//Co6hIOur8hw6Q/t2whX8NlBw==}
     peerDependencies:
       eslint: 9.6.0
