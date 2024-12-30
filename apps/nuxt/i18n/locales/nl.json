@@ -151,5 +151,10 @@
   "cms.blocks.error_title": "De data van uw block is incorrect.",
   "cms.blocks.not_supported": "Block `{blockName}` is not supported ",
   "projects.view_all": "al onze projecten",
-  "seo.title.auth": "Authenticatie"
+  "seo.title.auth": "Authenticatie",
+  "settings.font_size.default": "Standaard",
+  "settings.font_size.large": "Groot",
+  "settings.font_size.larger": "Groter",
+  "settings.font_size.small": "Klein",
+  "settings.font_size.smaller": "Kleiner"
 }

@@ -1,6 +1,11 @@
 import { authProcedure } from '@payload/trpc/procedures/auth.procedure'
+import {
+  AuthTransformer,
+  currentUserSchema,
+} from '@shared/models'
 
 export const getCurrentUser = authProcedure
+  .output(currentUserSchema)
   .query(({ ctx }) => {
-    return ctx.user
+    return AuthTransformer.toCurrentUser(ctx.user)
   })

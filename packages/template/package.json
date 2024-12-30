@@ -1,0 +1,23 @@
+{
+  "name": "@shared/template",
+  "type": "module",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint",
+    "ci": "pnpm build",
+    "clean": "rm -rf node_modules && rm -rf .output && rm -rf .next && rm -rf .dist",
+    "standalone-script": "node ./src/scripts/standalone-script.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "@wisemen/eslint-config-vue": "catalog:",
+    "eslint": "catalog:",
+    "typescript": "catalog:"
+  }
+}

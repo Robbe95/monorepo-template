@@ -96,7 +96,7 @@ export default buildConfig({
   sharp,
   typescript: {
     autoGenerate: true,
-    outputFile: path.resolve(dirname, 'payload-types.ts'),
+    outputFile: path.resolve(`${dirname}/../../../packages/payload-types/src`, 'payload-types.d.ts'),
   },
   async onInit() {
 

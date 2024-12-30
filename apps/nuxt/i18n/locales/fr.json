@@ -151,5 +151,10 @@
   "cms.blocks.error_title": "Les données de votre bloc sont incorrectes.",
   "cms.blocks.not_supported": "Le bloc `{blockName}` n'est pas pris en charge",
   "projects.view_all": "tous nos projets",
-  "seo.title.auth": "Authentification"
+  "seo.title.auth": "Authentification",
+  "settings.font_size.default": "Standard",
+  "settings.font_size.large": "Grand",
+  "settings.font_size.larger": "Plus gros",
+  "settings.font_size.small": "Petit",
+  "settings.font_size.smaller": "Plus petit"
 }

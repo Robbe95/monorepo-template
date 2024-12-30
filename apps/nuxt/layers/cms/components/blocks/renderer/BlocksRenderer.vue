@@ -4,7 +4,7 @@ import BlocksHero from '@cms/components/blocks/hero/BlocksHero.vue'
 import BlocksHubspotForm from '@cms/components/blocks/hubspot/BlocksHubspotForm.vue'
 import BlocksRendererError from '@cms/components/blocks/renderer/BlocksRendererError.vue'
 import BlocksRendererNotSupported from '@cms/components/blocks/renderer/BlocksRendererNotSupported.vue'
-import type { Page } from '@payload/payload-types'
+import type { Page } from '@shared/payload-types'
 
 import { NuxtErrorBoundary } from '#components'
 

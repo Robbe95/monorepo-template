@@ -1,4 +1,3 @@
-/* eslint-disable tailwindcss/no-custom-classname */
 import { BigLogo } from '@payload/components/logo/Logo'
 import { getEnv } from '@payload/env'
 

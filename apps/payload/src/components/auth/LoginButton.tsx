@@ -5,7 +5,6 @@ import React from 'react'
 function LoginButton({ url }: { url: string }) {
   return (
     <a
-    // eslint-disable-next-line tailwindcss/no-custom-classname
       className="btn btn--style-primary btn--icon-style-without-border btn--size-medium"
       style={{
         display: 'block',

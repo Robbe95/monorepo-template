@@ -1,4 +1,3 @@
-/* eslint-disable tailwindcss/no-custom-classname */
 /* eslint-disable func-style */
 import './index.css'
 import '@payloadcms/next/css'

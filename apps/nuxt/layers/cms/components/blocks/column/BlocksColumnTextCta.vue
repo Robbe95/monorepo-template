@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ColumnTextCtaBlock } from '@payload/payload-types'
+import type { ColumnTextCtaBlock } from '@shared/payload-types'
 
 interface Props {
   block: ColumnTextCtaBlock

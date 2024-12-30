@@ -1,5 +1,4 @@
 /* eslint-disable func-style */
-/* eslint-disable tailwindcss/no-custom-classname */
 'use client'
 
 import '@payloadcms/next/css'

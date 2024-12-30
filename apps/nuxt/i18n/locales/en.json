@@ -151,5 +151,11 @@
   "cms.blocks.error_title": "The data of your block is incorrect.",
   "cms.blocks.not_supported": "Block `{blockName}` is not supported",
   "projects.view_all": "all our projects",
-  "seo.title.auth": "Authentication"
+  "seo.title.auth": "Authentication",
+  "settings.font_size.default": "Standard",
+  "settings.font_size.large": "Large",
+  "settings.font_size.larger": "Larger",
+  "settings.font_size.small": "Small",
+  "settings.font_size.smaller": "Smaller"
+
 }

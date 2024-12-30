@@ -1,6 +1,5 @@
 /* eslint-disable check-file/folder-naming-convention */
 /* eslint-disable func-style */
-/* eslint-disable tailwindcss/no-custom-classname */
 
 'use client'
 import { Hamburger, useNav } from '@payloadcms/ui'

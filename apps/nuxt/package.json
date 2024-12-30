@@ -23,10 +23,12 @@
     "@nuxtjs/i18n": "9.1.1",
     "@nuxtjs/robots": "^5.1.0",
     "@nuxtjs/sitemap": "^7.0.1",
-    "@payloadcms/live-preview": "^3.11.0",
-    "@payloadcms/live-preview-vue": "^3.11.0",
+    "@payloadcms/live-preview": "^3.12.0",
+    "@payloadcms/live-preview-vue": "^3.12.0",
     "@pinia/nuxt": "^0.9.0",
     "@shared/constants": "workspace:*",
+    "@shared/models": "workspace:*",
+    "@shared/payload-types": "workspace:*",
     "@shared/utils": "workspace:*",
     "@tanstack/vue-query": "^5.62.9",
     "@trpc/client": "^10.45.2",
@@ -48,7 +50,7 @@
     "tailwindcss": "4.0.0-beta.8",
     "vue": "3.5.13",
     "vue-router": "4.5.0",
-    "zod": "3.24.1"
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
@@ -58,11 +60,11 @@
     "@tailwindcss/typography": "^0.5.15",
     "@types/dom-view-transitions": "^1.0.5",
     "@vue/test-utils": "^2.4.6",
-    "@wisemen/eslint-config-vue": "1.0.0-next.0",
-    "eslint": "9.17.0",
+    "@wisemen/eslint-config-vue": "catalog:",
+    "eslint": "catalog:",
     "sass": "1.83.0",
-    "typescript": "5.7.2",
-    "vitest": "2.1.8",
+    "typescript": "catalog:",
+    "vitest": "catalog:",
     "vue-tsc": "2.2.0"
   }
 }

@@ -1,8 +1,9 @@
-import { useGlobalI18n } from '~base/composables/i18n/useGlobaI18n'
-import type { Price } from '~base/models/price/price.model'
+import type { Currency } from '@shared/models'
 
-export function formatPrice(price: Price | null): string {
-  if (price === null) {
+import { useGlobalI18n } from '~base/composables/i18n/useGlobaI18n'
+
+export function formatCurrency(currency: Currency | null): string {
+  if (currency === null) {
     return '-'
   }
   const { locale } = useGlobalI18n()
@@ -12,5 +13,5 @@ export function formatPrice(price: Price | null): string {
     style: 'currency',
   })
 
-  return formatter.format(price)
+  return formatter.format(currency)
 }

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import BlocksColumnRenderer from '@cms/components/blocks/column/BlocksColumnRenderer.vue'
 import type { SingleColumnBlock } from '@cms/types/blocks.type'
-import type { ColumnBlock } from '@payload/payload-types'
+import type { ColumnBlock } from '@shared/payload-types'
 
 interface Props {
   block: ColumnBlock

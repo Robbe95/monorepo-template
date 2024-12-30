@@ -1,8 +1,11 @@
 {
-  "name": "@shared/empty",
+  "name": "@shared/models",
   "type": "module",
   "version": "0.0.0",
   "private": true,
+  "exports": {
+    ".": "./src/index.ts"
+  },
   "scripts": {
     "lint": "eslint",
     "ci": "pnpm build",
@@ -13,8 +16,9 @@
   "dependencies": {
   },
   "devDependencies": {
-    "@wisemen/eslint-config-vue": "^0.2.3",
-    "eslint": "^9.17.0",
-    "typescript": "5.7.2"
+    "@shared/payload-types": "workspace:*",
+    "@wisemen/eslint-config-vue": "catalog:",
+    "eslint": "catalog:",
+    "typescript": "catalog:"
   }
 }

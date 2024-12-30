@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useHubspotFormQuery } from '@cms/api/query/useHubspotFormQuery'
 import BlocksHubspotFormSchema from '@cms/components/blocks/hubspot/BlocksHubspotFormSchema.vue'
-import type { HubspotFormBlock } from '@payload/payload-types'
+import type { HubspotFormBlock } from '@shared/payload-types'
 import { VcSkeletonItem } from '@wisemen/vue-core'
 
 import AppContainer from '~base/components/app/AppContainer.vue'

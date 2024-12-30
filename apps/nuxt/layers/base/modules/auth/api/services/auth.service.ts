@@ -1,5 +1,5 @@
-import { AuthTransformer } from '#shared/models/auth.transformer'
-import type { CurrentUser } from '#shared/models/current-user/currentUser.model'
+import type { CurrentUser } from '@shared/models'
+
 import { useTrpc } from '~base/composables/api/useTrpc'
 
 export class AuthService {
@@ -8,6 +8,6 @@ export class AuthService {
 
     const data = await trpc.auth.getCurrentUser.query()
 
-    return AuthTransformer.toCurrentUser(data)
+    return data
   }
 }
