@@ -79,7 +79,7 @@ export interface Config {
       };
     };
     workflows: {
-      exampleWorkflow: WorkflowExampleWorkflow;
+      exampleWorkflow: ExampleWorkflow;
     };
   };
 }
@@ -1155,9 +1155,9 @@ export interface TaskSchedulePublish {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "WorkflowExampleWorkflow".
+ * via the `definition` "ExampleWorkflow".
  */
-export interface WorkflowExampleWorkflow {
+export interface ExampleWorkflow {
   input: {
     title: string;
   };

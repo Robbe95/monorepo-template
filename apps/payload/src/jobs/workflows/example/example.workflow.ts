@@ -14,5 +14,6 @@ export const exampleWorkflow: WorkflowConfig<'exampleWorkflow'> = {
       type: 'text',
     },
   ],
+  interfaceName: 'ExampleWorkflow',
   slug: 'exampleWorkflow',
 }
