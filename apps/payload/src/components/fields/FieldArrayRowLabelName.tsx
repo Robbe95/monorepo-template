@@ -2,7 +2,7 @@
 
 import { useRowLabel } from '@payloadcms/ui'
 
-export function FieldArrayRowLabel() {
+export function FieldArrayRowLabelName() {
   const { data } = useRowLabel<{ name?: string }>()
 
   const customLabel = `${data?.name ?? '...'}`

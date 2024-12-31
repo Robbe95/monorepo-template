@@ -8,7 +8,7 @@ export const settingsSocialsTab: Tab = {
       name: 'socials',
       admin: {
         components: {
-          RowLabel: '@payload/components/fields/FieldArrayRowLabel.tsx#FieldArrayRowLabel',
+          RowLabel: '@payload/components/fields/FieldArrayRowLabelSocials.tsx#FieldArrayRowLabelSocials',
         },
       },
       fields: [

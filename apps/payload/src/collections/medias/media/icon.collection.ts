@@ -4,6 +4,12 @@ export const iconCollection: CollectionConfig = {
   access: {
     read: () => true,
   },
+  admin: {
+    defaultColumns: [
+      'filename',
+      'alt',
+    ],
+  },
   fields: [
     {
       name: 'alt',
