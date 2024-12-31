@@ -1,12 +1,29 @@
-import type { AppRouter } from '@payload/trpc/router/trpc.router'
 import {
   createTRPCProxyClient,
   httpBatchLink,
 } from '@trpc/client'
+import type { AppRouter } from '@trpc-router'
 
 import { useGlobalI18n } from '~base/composables/i18n/useGlobaI18n'
 import { useAuthStore } from '~base/stores/auth.store'
 import { getEnv } from '~base/utils/env/getEnv.utils'
+
+async function handleAuth(headers: Record<string, string>) {
+  const authStore = useAuthStore()
+
+  if (authStore.isAuthenticated) {
+    try {
+      const token = await authStore.getToken()
+
+      headers.Authorization = `Bearer ${token}`
+    }
+    catch {
+      authStore.logout()
+    }
+  }
+
+  return headers
+}
 
 export function useTrpc() {
   const { CMS_BASE_URL } = getEnv()
@@ -16,21 +33,11 @@ export function useTrpc() {
     links: [
       httpBatchLink({
         async headers() {
-          const authStore = useAuthStore()
-          const headers: Record<string, string> = {}
+          let headers: Record<string, string> = {}
 
           headers['Accept-Language'] = locale.value
 
-          if (authStore.isAuthenticated) {
-            try {
-              const token = await authStore.getToken()
-
-              headers.Authorization = `Bearer ${token}`
-            }
-            catch {
-              authStore.logout()
-            }
-          }
+          headers = await handleAuth(headers)
 
           return headers
         },

@@ -7,10 +7,12 @@ export default defineNuxtConfig({
   alias: {
     '@': path.resolve(__dirname, './disable'),
     '@@': path.resolve(__dirname, './disable'),
+    '@trpc-router': path.resolve(__dirname, '../payload/src/trpc/router/trpc.router.ts'),
     '~~': path.resolve(__dirname, './disable'),
     '~base': path.resolve(__dirname, './layers/base'),
     '~cms': path.resolve(__dirname, './layers/cms'),
     '~root': path.resolve(__dirname, './'),
+
   },
 
   app: {

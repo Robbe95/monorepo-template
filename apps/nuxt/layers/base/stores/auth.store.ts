@@ -1,9 +1,9 @@
+import type { CurrentUser } from '@shared/models'
 import {
   computed,
   ref,
 } from 'vue'
 
-import type { CurrentUser } from '#shared/models/current-user/currentUser.model'
 import { AuthService } from '~base/modules/auth/api/services/auth.service'
 
 export const useAuthStore = defineStore('auth', () => {
