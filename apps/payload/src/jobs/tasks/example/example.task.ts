@@ -35,5 +35,4 @@ export const exampleTask: TaskConfig<'exampleTask'> = {
   onSuccess: () => {
     console.log('Example task success')
   },
-
 }

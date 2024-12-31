@@ -95,6 +95,7 @@ export default buildConfig({
   jobs: {
     tasks,
     workflows,
+    deleteJobOnComplete: false,
   },
 
   secret: process.env.PAYLOAD_SECRET ?? '',

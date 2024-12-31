@@ -2,12 +2,11 @@
 import type { WorkflowConfig } from 'payload'
 
 export const exampleWorkflow: WorkflowConfig<'exampleWorkflow'> = {
-  handler: async ({ tasks }) => {
-    const output = await tasks.exampleTask('1', { input: { title: 'Example Task' } })
+  handler: async ({ job, tasks }) => {
+    const output = await tasks.exampleTask('1', { input: { title: job.input.title } })
 
     console.log('workflow output', output)
   },
-  // The arguments that the workflow will accept
   inputSchema: [
     {
       name: 'title',
