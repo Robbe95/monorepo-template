@@ -1,5 +1,6 @@
 import { pageBlocks } from '@payload/blocks/page/page.blocks'
 import { getSeoFragment } from '@payload/fragments/seo.fragment'
+import { createExampleJob } from '@payload/jobs/jobs/example/example.job'
 import type { CollectionConfig } from 'payload'
 
 export const pageCollection: CollectionConfig = {
@@ -67,6 +68,15 @@ export const pageCollection: CollectionConfig = {
     },
 
   ],
+  hooks: {
+    afterChange: [
+      ({ doc }) => {
+        createExampleJob({
+          title: doc.title,
+        })
+      },
+    ],
+  },
   lockDocuments: {
     duration: 300,
   },
@@ -74,6 +84,7 @@ export const pageCollection: CollectionConfig = {
   versions: {
     drafts: {
       autosave: true,
+      schedulePublish: true,
     },
   },
 }

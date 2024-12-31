@@ -5,6 +5,8 @@ import { fileURLToPath } from 'node:url'
 
 import collections from '@payload/collections/collections'
 import globals from '@payload/globals/globals'
+import { tasks } from '@payload/jobs/tasks/tasks'
+import { workflows } from '@payload/jobs/workflows/workflows'
 import { migrations } from '@payload/migrations'
 import { setCollectionGroups } from '@payload/payload.nav'
 import { postgresAdapter } from '@payloadcms/db-postgres'
@@ -89,8 +91,11 @@ export default buildConfig({
         region: process.env.S3_REGION as string,
       },
     }),
-
   ],
+  jobs: {
+    tasks,
+    workflows,
+  },
 
   secret: process.env.PAYLOAD_SECRET ?? '',
   sharp,
