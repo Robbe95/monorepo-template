@@ -25,6 +25,10 @@ export default defineWorkspace([
           replacement: '/apps/payload',
         },
         {
+          find: '@trpc-router',
+          replacement: '/apps/payload/src/trpc/router/trpc.router.ts',
+        },
+        {
           find: '~root',
           replacement: '/apps/nuxt',
         },
