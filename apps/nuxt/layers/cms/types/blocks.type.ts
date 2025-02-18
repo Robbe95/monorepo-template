@@ -1,3 +1,3 @@
-import type { ColumnBlocks } from '@shared/payload-types'
+import type { ColumnBlocks } from '@repo/payload-types'
 
 export type SingleColumnBlock = NonNullable<NonNullable<ColumnBlocks>[number]['block']>[number]

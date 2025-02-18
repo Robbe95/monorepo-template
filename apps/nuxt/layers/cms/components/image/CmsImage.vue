@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Image } from '@shared/payload-types'
+import type { Image } from '@repo/payload-types'
 
 import { getEnv } from '~base/utils/env/getEnv.utils'
 

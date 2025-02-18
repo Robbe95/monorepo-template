@@ -1,5 +1,5 @@
 {
-  "name": "@shared/constants",
+  "name": "@repo/constants",
   "type": "module",
   "version": "0.0.0",
   "private": true,

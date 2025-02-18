@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import CmsImage from '@cms/components/image/CmsImage.vue'
-import type { HeroBlock } from '@shared/payload-types'
+import type { HeroBlock } from '@repo/payload-types'
 
 interface Props {
   block: HeroBlock

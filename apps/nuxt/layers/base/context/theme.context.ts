@@ -6,9 +6,10 @@ import {
   provide,
 } from 'vue'
 
-// TODO: Update when vue core updates
+import type { DarkModeValue } from '~base/composables/dark-mode/useDarkMode'
+
 interface ThemeProviderContext {
-  isDarkModeEnabled: ComputedRef<boolean>
+  darkModeValue: ComputedRef<DarkModeValue>
   theme: ComputedRef<string & {} | 'default'>
 }
 
@@ -23,7 +24,7 @@ export function injectThemeProviderContext(): ThemeProviderContext {
 
   if (context === null) {
     return {
-      isDarkModeEnabled: computed<boolean>(() => false),
+      darkModeValue: computed<DarkModeValue>(() => 'system'),
       theme: computed<string>(() => 'default'),
     }
   }

@@ -13,7 +13,7 @@ export default defineNuxtConfig({
     },
     families: [
       {
-        name: 'Kreon',
+        name: 'Template',
         global: true,
         preload: true,
         provider: 'local',
@@ -32,7 +32,7 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@nuxt/fonts',
     'nuxt-time',
-    'nuxt-tailwindcss4',
+    // 'nuxt-tailwindcss4',
     '@nuxtjs/color-mode',
   ],
   runtimeConfig: {

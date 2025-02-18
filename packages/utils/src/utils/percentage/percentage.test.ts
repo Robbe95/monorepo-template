@@ -1,4 +1,4 @@
-import type { Percentage } from '@shared/models'
+import type { Percentage } from '@repo/models'
 import {
   describe,
   expect,

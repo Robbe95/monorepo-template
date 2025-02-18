@@ -2,7 +2,7 @@ import { authProcedure } from '@payload/trpc/procedures/auth.procedure'
 import {
   AuthTransformer,
   currentUserSchema,
-} from '@shared/models'
+} from '@repo/models'
 
 export const getCurrentUser = authProcedure
   .output(currentUserSchema)

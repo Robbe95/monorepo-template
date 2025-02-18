@@ -1,5 +1,5 @@
 {
-  "name": "@shared/payload-types",
+  "name": "@repo/payload-types",
   "type": "module",
   "version": "0.0.0",
   "private": true,

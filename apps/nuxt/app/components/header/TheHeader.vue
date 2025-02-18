@@ -7,7 +7,7 @@ const { t } = useI18n()
 </script>
 
 <template>
-  <header class="fixed top-0 z-20 w-full">
+  <header class="sticky top-0 z-20 w-full">
     <div class="bg-black to-transparent py-6 text-white">
       <div class="container mx-auto px-4">
         <div class="flex items-center justify-between text-white lg:grid lg:grid-cols-3 lg:items-center lg:justify-center">

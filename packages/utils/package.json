@@ -1,5 +1,5 @@
 {
-  "name": "@shared/utils",
+  "name": "@repo/utils",
   "type": "module",
   "version": "0.0.0",
   "private": true,
@@ -11,7 +11,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@shared/models": "workspace:*"
+    "@repo/models": "workspace:*"
   },
   "devDependencies": {
     "@wisemen/eslint-config-vue": "catalog:",

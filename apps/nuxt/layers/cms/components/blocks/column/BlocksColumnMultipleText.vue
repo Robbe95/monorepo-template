@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ColumnMultipleTextBlock } from '@shared/payload-types'
+import type { ColumnMultipleTextBlock } from '@repo/payload-types'
 
 interface Props {
   block: ColumnMultipleTextBlock

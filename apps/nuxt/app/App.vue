@@ -2,7 +2,6 @@
 import {
   VcConfigProvider,
   VcDialogContainer,
-  VcThemeProvider,
   VcToastContainer,
 } from '@wisemen/vue-core'
 import { ConfigProvider } from 'reka-ui'
@@ -12,6 +11,7 @@ import {
   NuxtLoadingIndicator,
   NuxtPage,
 } from '#components'
+import AppThemeProvider from '~base/components/app/theme-provider/AppThemeProvider.vue'
 import { useTheme } from '~base/composables/theme/theme.composable'
 
 function useIdFunction() {
@@ -28,7 +28,7 @@ const locale = useI18n().locale
       <ConfigProvider :use-id="useIdFunction">
         <VcConfigProvider :locale="locale">
           <!-- TODO: Update when vue core updates -->
-          <VcThemeProvider :theme="theme">
+          <AppThemeProvider :theme="theme">
             <NuxtLoadingIndicator color="#FFFFFF" />
             <NuxtLayout>
               <NuxtPage />
@@ -37,7 +37,7 @@ const locale = useI18n().locale
               <VcDialogContainer />
               <VcToastContainer />
             </Teleport>
-          </VcThemeProvider>
+          </AppThemeProvider>
         </VcConfigProvider>
       </ConfigProvider>
     </div>

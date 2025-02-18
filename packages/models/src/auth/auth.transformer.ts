@@ -1,4 +1,4 @@
-import type { User } from '@shared/payload-types'
+import type { User } from '@repo/payload-types'
 
 import type { CurrentUser, UserId } from './current-user/currentUser.model'
 

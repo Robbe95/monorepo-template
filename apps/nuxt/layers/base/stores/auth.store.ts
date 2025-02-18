@@ -1,4 +1,4 @@
-import type { CurrentUser } from '@shared/models'
+import type { CurrentUser } from '@repo/models'
 import {
   computed,
   ref,

@@ -1,4 +1,4 @@
-import type { Currency } from '@shared/models'
+import type { Currency } from '@repo/models'
 
 import { useGlobalI18n } from '~base/composables/i18n/useGlobaI18n'
 
