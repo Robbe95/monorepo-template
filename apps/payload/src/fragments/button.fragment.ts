@@ -1,4 +1,4 @@
-import { getInfoFragment } from '@payload/fragments/info.fragment'
+import { getRouteFragment } from '@payload/fragments/route.fragment'
 import type { Field, GroupField } from 'payload'
 
 export interface GetButtonFragmentOptions {
@@ -13,13 +13,11 @@ export function getButtonFragment({ name, label }: GetButtonFragmentOptions): Gr
       required: true,
       type: 'text',
     },
-    {
-      name: 'link',
-      required: true,
-      type: 'text',
-    },
-    getInfoFragment({
-      info: 'Internal links should be formed like the following `/home/about`, external links should be formed like the following `https://example.com`',
+    ...getRouteFragment({
+      entities: [
+        'pages',
+        'users',
+      ],
     }),
   ]
 

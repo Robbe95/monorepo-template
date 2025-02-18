@@ -9,6 +9,8 @@ import type {
 import { VcSelect } from '@wisemen/vue-core'
 import type { Field } from 'formango'
 
+import { toFormField } from '~base/utils/form/toFormField.util'
+
 interface Props {
   formField: Field<any, any>
   hubspotField: HubspotField
@@ -20,7 +22,7 @@ const { t } = useI18n()
 const model = computed<any>({
   get() {
     return props.hubspotField.options?.find((hubspotFieldOption) =>
-      hubspotFieldOption.value === props.formField.modelValue) ?? null
+      hubspotFieldOption.value === props.formField.modelValue.value) ?? null
   },
   set(value) {
     props.formField.setValue(value.value)
@@ -47,7 +49,7 @@ const options = computed<SelectItem<HubspotFieldOption>[]>(() => {
       v-model="model"
       :placeholder="t('base.shared.select')"
       :label="hubspotField.label"
-      :errors="formField.errors"
+      :errors="toFormField(formField).errors"
       :display-fn="displayFunction"
       :items="options"
       @blur="formField.onBlur"

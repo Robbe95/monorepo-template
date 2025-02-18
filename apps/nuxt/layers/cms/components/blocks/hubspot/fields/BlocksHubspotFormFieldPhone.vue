@@ -3,6 +3,8 @@ import type { HubspotField } from '@cms/types/hubspotForm.type'
 import { VcPhoneNumberField } from '@wisemen/vue-core'
 import type { Field } from 'formango'
 
+import { toFormField } from '~base/utils/form/toFormField.util'
+
 interface Props {
   formField: Field<any, any>
   hubspotField: HubspotField
@@ -15,7 +17,7 @@ defineProps<Props>()
   <div class="w-full">
     <VcPhoneNumberField
       :label="hubspotField.label"
-      v-bind="formField"
+      v-bind="toFormField(formField)"
     />
   </div>
 </template>

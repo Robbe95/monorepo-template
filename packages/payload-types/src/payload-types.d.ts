@@ -58,11 +58,9 @@ export interface Config {
     defaultIDType: string;
   };
   globals: {
-    'home-page': HomePage;
     settings: Setting;
   };
   globalsSelect: {
-    'home-page': HomePageSelect<false> | HomePageSelect<true>;
     settings: SettingsSelect<false> | SettingsSelect<true>;
   };
   locale: 'en' | 'nl' | 'fr';
@@ -133,7 +131,10 @@ export interface HeroBlock {
     | {
         cta: {
           label: string;
-          link: string;
+          type: 'pages' | 'users' | 'external';
+          toPages?: (string | null) | Page;
+          toUsers?: (string | null) | User;
+          toExternal?: string | null;
         };
         id?: string | null;
       }[]
@@ -142,6 +143,46 @@ export interface HeroBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'hero';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users".
+ */
+export interface User {
+  id: string;
+  title?: string | null;
+  role: 'user' | 'admin' | 'editor' | 'developer';
+  addresses?: (string | Address)[] | null;
+  updatedAt: string;
+  createdAt: string;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  password?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "addresses".
+ */
+export interface Address {
+  id: string;
+  label: string;
+  street: string;
+  number: string;
+  box?: string | null;
+  postal_code: string;
+  city: string;
+  region?: string | null;
+  country: string;
+  email?: string | null;
+  phone?: string | null;
+  type?: ('billing' | 'shipping')[] | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -238,7 +279,10 @@ export interface ColumnMultipleTextBlock {
     | {
         cta: {
           label: string;
-          link: string;
+          type: 'pages' | 'users' | 'external';
+          toPages?: (string | null) | Page;
+          toUsers?: (string | null) | User;
+          toExternal?: string | null;
         };
         id?: string | null;
       }[]
@@ -258,7 +302,10 @@ export interface ColumnTextCtaBlock {
     | {
         cta: {
           label: string;
-          link: string;
+          type: 'pages' | 'users' | 'external';
+          toPages?: (string | null) | Page;
+          toUsers?: (string | null) | User;
+          toExternal?: string | null;
         };
         id?: string | null;
       }[]
@@ -364,46 +411,6 @@ export interface FormSubmission {
     | number
     | boolean
     | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users".
- */
-export interface User {
-  id: string;
-  title?: string | null;
-  role: 'user' | 'admin' | 'editor' | 'developer';
-  addresses?: (string | Address)[] | null;
-  updatedAt: string;
-  createdAt: string;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
-  password?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "addresses".
- */
-export interface Address {
-  id: string;
-  label: string;
-  street: string;
-  number: string;
-  box?: string | null;
-  postal_code: string;
-  city: string;
-  region?: string | null;
-  country: string;
-  email?: string | null;
-  phone?: string | null;
-  type?: ('billing' | 'shipping')[] | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -647,7 +654,10 @@ export interface HeroBlockSelect<T extends boolean = true> {
           | T
           | {
               label?: T;
-              link?: T;
+              type?: T;
+              toPages?: T;
+              toUsers?: T;
+              toExternal?: T;
             };
         id?: T;
       };
@@ -705,7 +715,10 @@ export interface ColumnMultipleTextBlockSelect<T extends boolean = true> {
           | T
           | {
               label?: T;
-              link?: T;
+              type?: T;
+              toPages?: T;
+              toUsers?: T;
+              toExternal?: T;
             };
         id?: T;
       };
@@ -726,7 +739,10 @@ export interface ColumnTextCtaBlockSelect<T extends boolean = true> {
           | T
           | {
               label?: T;
-              link?: T;
+              type?: T;
+              toPages?: T;
+              toUsers?: T;
+              toExternal?: T;
             };
         id?: T;
       };
@@ -1017,25 +1033,6 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "home-page".
- */
-export interface HomePage {
-  id: string;
-  blocks?: (HeroBlock | CarouselBlock | ColumnBlock | HubspotFormBlock | ImageTextBlock | TextBlock)[] | null;
-  seo?: {
-    title?: string | null;
-    description?: string | null;
-    /**
-     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
-     */
-    image?: (string | null) | Image;
-  };
-  _status?: ('draft' | 'published') | null;
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "settings".
  */
 export interface Setting {
@@ -1063,33 +1060,6 @@ export interface Social {
   name?: string | null;
   url?: string | null;
   icon: string | Icon;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "home-page_select".
- */
-export interface HomePageSelect<T extends boolean = true> {
-  blocks?:
-    | T
-    | {
-        hero?: T | HeroBlockSelect<T>;
-        carousel?: T | CarouselBlockSelect<T>;
-        column?: T | ColumnBlockSelect<T>;
-        'hubspot-form'?: T | HubspotFormBlockSelect<T>;
-        'image-text'?: T | ImageTextBlockSelect<T>;
-        text?: T | TextBlockSelect<T>;
-      };
-  seo?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-        image?: T;
-      };
-  _status?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

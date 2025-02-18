@@ -8,9 +8,9 @@ const { t } = useI18n()
 
 <template>
   <header class="sticky top-0 z-20 w-full">
-    <div class="bg-black to-transparent py-6 text-white">
+    <div class="bg-black to-transparent py-6">
       <div class="container mx-auto px-4">
-        <div class="flex items-center justify-between text-white lg:grid lg:grid-cols-3 lg:items-center lg:justify-center">
+        <div class="flex items-center justify-between lg:grid lg:grid-cols-3 lg:items-center lg:justify-center bg-primary-500">
           <HeaderLogo />
           <div />
           <div class="flex items-center justify-end gap-4">

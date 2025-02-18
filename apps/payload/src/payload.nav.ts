@@ -9,7 +9,6 @@ import type {
 
 export const navSorting: Record<string, (CollectionSlug | GlobalSlug)[]> = {
   pages: [
-    'home-page',
     'pages',
   ],
   forms: [

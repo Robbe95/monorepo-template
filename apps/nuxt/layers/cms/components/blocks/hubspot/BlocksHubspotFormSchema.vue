@@ -14,35 +14,34 @@ const props = defineProps<{
   hubspotForm: HubspotForm
 }>()
 
-const hubspotZodSchema = makeHubspotFormZodSchema(props.hubspotForm)
-const hubspotFormMutation = useHubspotFormMutation()
-const { form, onSubmitForm } = useForm({
-  schema: hubspotZodSchema,
-})
-
 const isSubmitted = ref<boolean>(false)
 
-onSubmitForm(async (data) => {
+const hubspotZodSchema = makeHubspotFormZodSchema(props.hubspotForm)
+const hubspotFormMutation = useHubspotFormMutation()
+const form = useForm({
+  schema: hubspotZodSchema,
+  onSubmit: async (data) => {
   /*
    * Reform group0.firstname etc to just flat firstname: 'name', ...
    */
 
-  const reformedData: Record<string, any> = {}
+    const reformedData: Record<string, any> = {}
 
-  Object.keys(data).forEach((groupName) => {
-    const group = data[groupName]
+    Object.keys(data).forEach((groupName) => {
+      const group = data[groupName]
 
-    Object.keys(group).forEach((fieldName) => {
-      reformedData[fieldName] = group[fieldName]
+      Object.keys(group).forEach((fieldName) => {
+        reformedData[fieldName] = group[fieldName]
+      })
     })
-  })
 
-  await hubspotFormMutation.mutateAsync({
-    formId: props.hubspotForm.id,
-    data: reformedData,
-  })
+    await hubspotFormMutation.mutateAsync({
+      formId: props.hubspotForm.id,
+      data: reformedData,
+    })
 
-  isSubmitted.value = true
+    isSubmitted.value = true
+  },
 })
 </script>
 
@@ -73,7 +72,7 @@ onSubmitForm(async (data) => {
       </div>
       <div class="flex justify-end">
         <VcButton
-          :is-loading="form.isSubmitting"
+          :is-loading="form.isSubmitting.value"
           @click="form.submit"
         >
           {{ hubspotForm.displayOptions.submitButtonText }}

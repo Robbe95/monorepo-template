@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import BlocksRenderer from '@cms/components/blocks/renderer/BlocksRenderer.vue'
-import type { HomePage, Page } from '@repo/payload-types'
+import type { Page } from '@repo/payload-types'
 
 interface Props {
-  page: HomePage | Page
+  page: Page
 }
 
 defineProps<Props>()

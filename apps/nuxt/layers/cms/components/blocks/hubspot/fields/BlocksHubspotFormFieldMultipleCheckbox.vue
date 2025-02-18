@@ -7,6 +7,7 @@ import { VcInputFieldLabel } from '@wisemen/vue-core'
 import type { Field } from 'formango'
 
 import AppCheckboxGroup from '~base/components/app/AppCheckboxGroup.vue'
+import { toFormField } from '~base/utils/form/toFormField.util'
 
 interface Props {
   formField: Field<any, any>
@@ -36,7 +37,7 @@ const options = computed<RadioGroupItem<string>[]>(() => {
 
     <AppCheckboxGroup
       :label="hubspotField.label"
-      v-bind="formField"
+      v-bind="toFormField(formField)"
       :items="options"
     />
   </div>

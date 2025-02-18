@@ -1,66 +1,60 @@
 import type {
   OAuth2Tokens,
   TokensStrategy,
-  TokensStrategySetCodeVerifierOptions,
-  TokensStrategySetTokensOptions,
 } from '@wisemen/vue-core-auth'
 
 export const CODE_VERIFIER_KEY = 'code_verifier'
 export const LOCAL_STORAGE_KEY = 'tokens'
 
-function getTokens(key: string): OAuth2Tokens | null {
-  const tokens = useCookie<OAuth2Tokens | null>(key, { default: () => null })
+export class CookieTokensStrategy implements TokensStrategy {
+  private CODE_VERIFIER_KEY = 'code_verifier'
+  private TOKENS_KEY = 'tokens'
+  constructor() {}
+  public getCodeVerifier(): string | null {
+    const tokens = useCookie<string | null>(this.TOKENS_KEY, { default: () => null })
 
-  if (tokens === null) {
-    return null
+    return tokens.value
   }
 
-  return tokens.value
-}
+  public getTokens(): OAuth2Tokens | null {
+    const tokens = useCookie<OAuth2Tokens | null>(this.TOKENS_KEY, { default: () => null })
 
-function removeTokens(key: string): void {
-  const tokens = useCookie<OAuth2Tokens | null>(key, { default: () => null })
+    if (tokens === null) {
+      return null
+    }
 
-  if (tokens === null) {
-    return
+    return tokens.value
   }
 
-  tokens.value = null
-}
+  public removeCodeVerifier(): void {
+    const tokens = useCookie<string | null>(this.CODE_VERIFIER_KEY, { default: () => null })
 
-function setTokens({ key, tokens }: TokensStrategySetTokensOptions): void {
-  const cookie = useCookie<OAuth2Tokens | null>(key, { default: () => null })
+    if (tokens === null) {
+      return
+    }
 
-  cookie.value = tokens
-}
-
-function setCodeVerifier({ codeVerifier, key }: TokensStrategySetCodeVerifierOptions): void {
-  const cookie = useCookie<string | null>(key, { default: () => null })
-
-  cookie.value = codeVerifier
-}
-
-function removeCodeVerifier(key: string): void {
-  const tokens = useCookie<string | null>(key, { default: () => null })
-
-  if (tokens === null) {
-    return
+    tokens.value = null
   }
 
-  tokens.value = null
-}
+  public removeTokens(): void {
+    const tokens = useCookie<OAuth2Tokens | null>(this.TOKENS_KEY, { default: () => null })
 
-function getCodeVerifier(key: string): string | null {
-  const tokens = useCookie<string | null>(key, { default: () => null })
+    if (tokens === null) {
+      return
+    }
 
-  return tokens.value
-}
+    tokens.value = null
+  }
 
-export const cookieTokensStrategy: TokensStrategy = {
-  getCodeVerifier: () => getCodeVerifier(CODE_VERIFIER_KEY),
-  getTokens: () => getTokens(LOCAL_STORAGE_KEY),
-  removeCodeVerifier: () => removeCodeVerifier(CODE_VERIFIER_KEY),
-  removeTokens: () => removeTokens(LOCAL_STORAGE_KEY),
-  setCodeVerifier: (codeVerifier: string) => setCodeVerifier({ codeVerifier, key: CODE_VERIFIER_KEY }),
-  setTokens: (tokens: OAuth2Tokens) => setTokens({ key: LOCAL_STORAGE_KEY, tokens }),
+  public setCodeVerifier(codeVerifier: string): void {
+    const cookie = useCookie<string | null>(this.CODE_VERIFIER_KEY, { default: () => null })
+
+    cookie.value = codeVerifier
+  }
+
+  public setTokens(tokens: OAuth2Tokens): void {
+    const cookie = useCookie<OAuth2Tokens | null>(this.TOKENS_KEY, { default: () => null })
+
+    cookie.value = tokens
+  }
 }

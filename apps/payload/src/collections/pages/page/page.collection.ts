@@ -31,6 +31,7 @@ export const pageCollection: CollectionConfig = {
       admin: {
         position: 'sidebar',
       },
+      localized: true,
       required: true,
       type: 'text',
     },
@@ -39,6 +40,7 @@ export const pageCollection: CollectionConfig = {
       admin: {
         position: 'sidebar',
       },
+      localized: true,
       required: true,
       type: 'text',
     },

@@ -39,7 +39,7 @@ const dropdownItems = computed<DropdownMenuItem[]>(() => {
         </span>
         <VcIcon
           icon="chevronDown"
-          class="size-lg"
+          class="size-4"
         />
       </button>
     </template>

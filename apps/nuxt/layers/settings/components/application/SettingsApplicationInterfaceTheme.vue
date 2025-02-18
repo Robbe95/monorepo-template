@@ -2,7 +2,6 @@
 import {
   defineStyleConfig,
   type RadioGroupItem,
-  VcButton,
   VcRadioGroup,
   VcRadioGroupItem,
 } from '@wisemen/vue-core'
@@ -59,11 +58,6 @@ defineStyleConfig({
     :title="t('module.setting.interface_theme.title')"
     :description="t('module.setting.interface_theme.description')"
   >
-    <VcButton
-      class="w-full button-test"
-    >
-      lalal
-    </VcButton>
     <VcRadioGroup
       v-model="value"
     >

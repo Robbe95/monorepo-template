@@ -2,7 +2,7 @@ import { ZitadelClient } from '@wisemen/vue-core-auth'
 import type { $Fetch, FetchOptions } from 'ofetch'
 
 import { useOFetchStrategy } from '~base/utils/auth/fetchStrategy'
-import { cookieTokensStrategy } from '~base/utils/auth/tokensStrategy'
+import { CookieTokensStrategy } from '~base/utils/auth/tokensStrategy'
 import { getEnv } from '~base/utils/env/getEnv.utils'
 
 export function addAuthorizationHeader(
@@ -36,7 +36,7 @@ export default defineNuxtPlugin({
       loginRedirectUri: `${SITE_BASE_URL}/auth/callback`,
       offline: ENVIRONMENT === 'e2e',
       postLogoutRedirectUri: `${SITE_BASE_URL}/auth/logout`,
-      tokensStrategy: cookieTokensStrategy,
+      tokensStrategy: new CookieTokensStrategy(),
     })
 
     const api = $fetch.create({
