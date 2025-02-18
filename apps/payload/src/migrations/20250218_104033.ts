@@ -1,0 +1,1343 @@
+import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-postgres'
+
+export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
+  await db.execute(sql`
+   CREATE TYPE "public"."_locales" AS ENUM('en', 'nl', 'fr');
+  CREATE TYPE "public"."route_fragment_type" AS ENUM('pages', 'users', 'external');
+  CREATE TYPE "public"."enum_pages_status" AS ENUM('draft', 'published');
+  CREATE TYPE "public"."enum__pages_v_version_status" AS ENUM('draft', 'published');
+  CREATE TYPE "public"."enum__pages_v_published_locale" AS ENUM('en', 'nl', 'fr');
+  CREATE TYPE "public"."enum_form_builder_blocks_form_input_block_type" AS ENUM('text', 'email', 'password', 'number', 'date', 'tel');
+  CREATE TYPE "public"."enum_users_role" AS ENUM('user', 'admin', 'editor', 'developer');
+  CREATE TYPE "public"."enum_addresses_type" AS ENUM('billing', 'shipping');
+  CREATE TYPE "public"."enum_payload_jobs_log_task_slug" AS ENUM('inline', 'exampleTask', 'schedulePublish');
+  CREATE TYPE "public"."enum_payload_jobs_log_state" AS ENUM('failed', 'succeeded');
+  CREATE TYPE "public"."enum_payload_jobs_workflow_slug" AS ENUM('exampleWorkflow');
+  CREATE TYPE "public"."enum_payload_jobs_task_slug" AS ENUM('inline', 'exampleTask', 'schedulePublish');
+  CREATE TABLE IF NOT EXISTS "pages_blocks_hero_ctas" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" varchar NOT NULL,
+  	"_locale" "_locales" NOT NULL,
+  	"id" varchar PRIMARY KEY NOT NULL,
+  	"cta_label" varchar,
+  	"cta_type" "route_fragment_type",
+  	"cta_to_pages_id" uuid,
+  	"cta_to_users_id" uuid,
+  	"cta_to_external" varchar
+  );
+  
+  CREATE TABLE IF NOT EXISTS "pages_blocks_hero" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" uuid NOT NULL,
+  	"_path" text NOT NULL,
+  	"_locale" "_locales" NOT NULL,
+  	"id" varchar PRIMARY KEY NOT NULL,
+  	"title" varchar,
+  	"text" varchar,
+  	"background_image_id" uuid,
+  	"block_name" varchar
+  );
+  
+  CREATE TABLE IF NOT EXISTS "pages_blocks_carousel" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" uuid NOT NULL,
+  	"_path" text NOT NULL,
+  	"_locale" "_locales" NOT NULL,
+  	"id" varchar PRIMARY KEY NOT NULL,
+  	"block_name" varchar
+  );
+  
+  CREATE TABLE IF NOT EXISTS "pages_blocks_column_multiple_text_texts" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" varchar NOT NULL,
+  	"_locale" "_locales" NOT NULL,
+  	"id" varchar PRIMARY KEY NOT NULL,
+  	"subtitle" varchar,
+  	"text" varchar
+  );
+  
+  CREATE TABLE IF NOT EXISTS "pages_blocks_column_multiple_text_ctas" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" varchar NOT NULL,
+  	"_locale" "_locales" NOT NULL,
+  	"id" varchar PRIMARY KEY NOT NULL,
+  	"cta_label" varchar,
+  	"cta_type" "route_fragment_type",
+  	"cta_to_pages_id" uuid,
+  	"cta_to_users_id" uuid,
+  	"cta_to_external" varchar
+  );
+  
+  CREATE TABLE IF NOT EXISTS "pages_blocks_column_multiple_text" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" uuid NOT NULL,
+  	"_path" text NOT NULL,
+  	"_locale" "_locales" NOT NULL,
+  	"id" varchar PRIMARY KEY NOT NULL,
+  	"block_name" varchar
+  );
+  
+  CREATE TABLE IF NOT EXISTS "pages_blocks_column_text_cta_ctas" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" varchar NOT NULL,
+  	"_locale" "_locales" NOT NULL,
+  	"id" varchar PRIMARY KEY NOT NULL,
+  	"cta_label" varchar,
+  	"cta_type" "route_fragment_type",
+  	"cta_to_pages_id" uuid,
+  	"cta_to_users_id" uuid,
+  	"cta_to_external" varchar
+  );
+  
+  CREATE TABLE IF NOT EXISTS "pages_blocks_column_text_cta" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" uuid NOT NULL,
+  	"_path" text NOT NULL,
+  	"_locale" "_locales" NOT NULL,
+  	"id" varchar PRIMARY KEY NOT NULL,
+  	"title" varchar,
+  	"text" varchar,
+  	"block_name" varchar
+  );
+  
+  CREATE TABLE IF NOT EXISTS "pages_blocks_column_columns" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" varchar NOT NULL,
+  	"_locale" "_locales" NOT NULL,
+  	"id" varchar PRIMARY KEY NOT NULL
+  );
+  
+  CREATE TABLE IF NOT EXISTS "pages_blocks_column" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" uuid NOT NULL,
+  	"_path" text NOT NULL,
+  	"_locale" "_locales" NOT NULL,
+  	"id" varchar PRIMARY KEY NOT NULL,
+  	"block_name" varchar
+  );
+  
+  CREATE TABLE IF NOT EXISTS "pages_blocks_hubspot_form" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" uuid NOT NULL,
+  	"_path" text NOT NULL,
+  	"_locale" "_locales" NOT NULL,
+  	"id" varchar PRIMARY KEY NOT NULL,
+  	"hubspot_form_id" uuid,
+  	"block_name" varchar
+  );
+  
+  CREATE TABLE IF NOT EXISTS "pages_blocks_image_text" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" uuid NOT NULL,
+  	"_path" text NOT NULL,
+  	"_locale" "_locales" NOT NULL,
+  	"id" varchar PRIMARY KEY NOT NULL,
+  	"title" varchar,
+  	"text" varchar,
+  	"block_name" varchar
+  );
+  
+  CREATE TABLE IF NOT EXISTS "pages_blocks_text" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" uuid NOT NULL,
+  	"_path" text NOT NULL,
+  	"_locale" "_locales" NOT NULL,
+  	"id" varchar PRIMARY KEY NOT NULL,
+  	"title" varchar,
+  	"text" varchar,
+  	"block_name" varchar
+  );
+  
+  CREATE TABLE IF NOT EXISTS "pages" (
+  	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"_status" "enum_pages_status" DEFAULT 'draft'
+  );
+  
+  CREATE TABLE IF NOT EXISTS "pages_locales" (
+  	"title" varchar,
+  	"slug" varchar,
+  	"seo_title" varchar,
+  	"seo_description" varchar,
+  	"seo_image_id" uuid,
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"_locale" "_locales" NOT NULL,
+  	"_parent_id" uuid NOT NULL
+  );
+  
+  CREATE TABLE IF NOT EXISTS "pages_rels" (
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"order" integer,
+  	"parent_id" uuid NOT NULL,
+  	"path" varchar NOT NULL,
+  	"locale" "_locales",
+  	"images_id" uuid
+  );
+  
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_hero_ctas" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" uuid NOT NULL,
+  	"_locale" "_locales" NOT NULL,
+  	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+  	"cta_label" varchar,
+  	"cta_type" "route_fragment_type",
+  	"cta_to_pages_id" uuid,
+  	"cta_to_users_id" uuid,
+  	"cta_to_external" varchar,
+  	"_uuid" varchar
+  );
+  
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_hero" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" uuid NOT NULL,
+  	"_path" text NOT NULL,
+  	"_locale" "_locales" NOT NULL,
+  	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+  	"title" varchar,
+  	"text" varchar,
+  	"background_image_id" uuid,
+  	"_uuid" varchar,
+  	"block_name" varchar
+  );
+  
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_carousel" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" uuid NOT NULL,
+  	"_path" text NOT NULL,
+  	"_locale" "_locales" NOT NULL,
+  	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+  	"_uuid" varchar,
+  	"block_name" varchar
+  );
+  
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_column_multiple_text_texts" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" uuid NOT NULL,
+  	"_locale" "_locales" NOT NULL,
+  	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+  	"subtitle" varchar,
+  	"text" varchar,
+  	"_uuid" varchar
+  );
+  
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_column_multiple_text_ctas" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" uuid NOT NULL,
+  	"_locale" "_locales" NOT NULL,
+  	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+  	"cta_label" varchar,
+  	"cta_type" "route_fragment_type",
+  	"cta_to_pages_id" uuid,
+  	"cta_to_users_id" uuid,
+  	"cta_to_external" varchar,
+  	"_uuid" varchar
+  );
+  
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_column_multiple_text" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" uuid NOT NULL,
+  	"_path" text NOT NULL,
+  	"_locale" "_locales" NOT NULL,
+  	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+  	"_uuid" varchar,
+  	"block_name" varchar
+  );
+  
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_column_text_cta_ctas" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" uuid NOT NULL,
+  	"_locale" "_locales" NOT NULL,
+  	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+  	"cta_label" varchar,
+  	"cta_type" "route_fragment_type",
+  	"cta_to_pages_id" uuid,
+  	"cta_to_users_id" uuid,
+  	"cta_to_external" varchar,
+  	"_uuid" varchar
+  );
+  
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_column_text_cta" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" uuid NOT NULL,
+  	"_path" text NOT NULL,
+  	"_locale" "_locales" NOT NULL,
+  	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+  	"title" varchar,
+  	"text" varchar,
+  	"_uuid" varchar,
+  	"block_name" varchar
+  );
+  
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_column_columns" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" uuid NOT NULL,
+  	"_locale" "_locales" NOT NULL,
+  	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+  	"_uuid" varchar
+  );
+  
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_column" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" uuid NOT NULL,
+  	"_path" text NOT NULL,
+  	"_locale" "_locales" NOT NULL,
+  	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+  	"_uuid" varchar,
+  	"block_name" varchar
+  );
+  
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_hubspot_form" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" uuid NOT NULL,
+  	"_path" text NOT NULL,
+  	"_locale" "_locales" NOT NULL,
+  	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+  	"hubspot_form_id" uuid,
+  	"_uuid" varchar,
+  	"block_name" varchar
+  );
+  
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_image_text" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" uuid NOT NULL,
+  	"_path" text NOT NULL,
+  	"_locale" "_locales" NOT NULL,
+  	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+  	"title" varchar,
+  	"text" varchar,
+  	"_uuid" varchar,
+  	"block_name" varchar
+  );
+  
+  CREATE TABLE IF NOT EXISTS "_pages_v_blocks_text" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" uuid NOT NULL,
+  	"_path" text NOT NULL,
+  	"_locale" "_locales" NOT NULL,
+  	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+  	"title" varchar,
+  	"text" varchar,
+  	"_uuid" varchar,
+  	"block_name" varchar
+  );
+  
+  CREATE TABLE IF NOT EXISTS "_pages_v" (
+  	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+  	"parent_id" uuid,
+  	"version_updated_at" timestamp(3) with time zone,
+  	"version_created_at" timestamp(3) with time zone,
+  	"version__status" "enum__pages_v_version_status" DEFAULT 'draft',
+  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"snapshot" boolean,
+  	"published_locale" "enum__pages_v_published_locale",
+  	"latest" boolean,
+  	"autosave" boolean
+  );
+  
+  CREATE TABLE IF NOT EXISTS "_pages_v_locales" (
+  	"version_title" varchar,
+  	"version_slug" varchar,
+  	"version_seo_title" varchar,
+  	"version_seo_description" varchar,
+  	"version_seo_image_id" uuid,
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"_locale" "_locales" NOT NULL,
+  	"_parent_id" uuid NOT NULL
+  );
+  
+  CREATE TABLE IF NOT EXISTS "_pages_v_rels" (
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"order" integer,
+  	"parent_id" uuid NOT NULL,
+  	"path" varchar NOT NULL,
+  	"locale" "_locales",
+  	"images_id" uuid
+  );
+  
+  CREATE TABLE IF NOT EXISTS "form_builder_blocks_form_input_block" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" uuid NOT NULL,
+  	"_path" text NOT NULL,
+  	"id" varchar PRIMARY KEY NOT NULL,
+  	"label" varchar NOT NULL,
+  	"is_required" boolean DEFAULT false NOT NULL,
+  	"type" "enum_form_builder_blocks_form_input_block_type",
+  	"block_name" varchar
+  );
+  
+  CREATE TABLE IF NOT EXISTS "form_builder_blocks_form_grid_block" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" uuid NOT NULL,
+  	"_path" text NOT NULL,
+  	"id" varchar PRIMARY KEY NOT NULL,
+  	"colums" numeric NOT NULL,
+  	"block_name" varchar
+  );
+  
+  CREATE TABLE IF NOT EXISTS "form_builder" (
+  	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
+  );
+  
+  CREATE TABLE IF NOT EXISTS "form_builder_locales" (
+  	"title" varchar NOT NULL,
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"_locale" "_locales" NOT NULL,
+  	"_parent_id" uuid NOT NULL
+  );
+  
+  CREATE TABLE IF NOT EXISTS "form_submission" (
+  	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+  	"form_id" uuid NOT NULL,
+  	"submission" jsonb,
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
+  );
+  
+  CREATE TABLE IF NOT EXISTS "form_hubspot" (
+  	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+  	"form_id" varchar NOT NULL,
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
+  );
+  
+  CREATE TABLE IF NOT EXISTS "form_hubspot_locales" (
+  	"title" varchar NOT NULL,
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"_locale" "_locales" NOT NULL,
+  	"_parent_id" uuid NOT NULL
+  );
+  
+  CREATE TABLE IF NOT EXISTS "users" (
+  	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+  	"role" "enum_users_role" DEFAULT 'user' NOT NULL,
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"email" varchar NOT NULL,
+  	"reset_password_token" varchar,
+  	"reset_password_expiration" timestamp(3) with time zone,
+  	"salt" varchar,
+  	"hash" varchar,
+  	"login_attempts" numeric DEFAULT 0,
+  	"lock_until" timestamp(3) with time zone
+  );
+  
+  CREATE TABLE IF NOT EXISTS "users_rels" (
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"order" integer,
+  	"parent_id" uuid NOT NULL,
+  	"path" varchar NOT NULL,
+  	"addresses_id" uuid
+  );
+  
+  CREATE TABLE IF NOT EXISTS "addresses_type" (
+  	"order" integer NOT NULL,
+  	"parent_id" uuid NOT NULL,
+  	"value" "enum_addresses_type",
+  	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL
+  );
+  
+  CREATE TABLE IF NOT EXISTS "addresses" (
+  	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+  	"label" varchar NOT NULL,
+  	"street" varchar NOT NULL,
+  	"number" varchar NOT NULL,
+  	"box" varchar,
+  	"postal_code" varchar NOT NULL,
+  	"city" varchar NOT NULL,
+  	"region" varchar,
+  	"country" varchar NOT NULL,
+  	"email" varchar,
+  	"phone" varchar,
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
+  );
+  
+  CREATE TABLE IF NOT EXISTS "images" (
+  	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+  	"alt" varchar,
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"url" varchar,
+  	"thumbnail_u_r_l" varchar,
+  	"filename" varchar,
+  	"mime_type" varchar,
+  	"filesize" numeric,
+  	"width" numeric,
+  	"height" numeric,
+  	"focal_x" numeric,
+  	"focal_y" numeric,
+  	"sizes_thumbnail_url" varchar,
+  	"sizes_thumbnail_width" numeric,
+  	"sizes_thumbnail_height" numeric,
+  	"sizes_thumbnail_mime_type" varchar,
+  	"sizes_thumbnail_filesize" numeric,
+  	"sizes_thumbnail_filename" varchar,
+  	"sizes_card_url" varchar,
+  	"sizes_card_width" numeric,
+  	"sizes_card_height" numeric,
+  	"sizes_card_mime_type" varchar,
+  	"sizes_card_filesize" numeric,
+  	"sizes_card_filename" varchar,
+  	"sizes_tablet_url" varchar,
+  	"sizes_tablet_width" numeric,
+  	"sizes_tablet_height" numeric,
+  	"sizes_tablet_mime_type" varchar,
+  	"sizes_tablet_filesize" numeric,
+  	"sizes_tablet_filename" varchar,
+  	"sizes_desktop_url" varchar,
+  	"sizes_desktop_width" numeric,
+  	"sizes_desktop_height" numeric,
+  	"sizes_desktop_mime_type" varchar,
+  	"sizes_desktop_filesize" numeric,
+  	"sizes_desktop_filename" varchar,
+  	"sizes_background_url" varchar,
+  	"sizes_background_width" numeric,
+  	"sizes_background_height" numeric,
+  	"sizes_background_mime_type" varchar,
+  	"sizes_background_filesize" numeric,
+  	"sizes_background_filename" varchar
+  );
+  
+  CREATE TABLE IF NOT EXISTS "icons" (
+  	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+  	"alt" varchar,
+  	"content" varchar,
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"url" varchar,
+  	"thumbnail_u_r_l" varchar,
+  	"filename" varchar,
+  	"mime_type" varchar,
+  	"filesize" numeric,
+  	"width" numeric,
+  	"height" numeric,
+  	"focal_x" numeric,
+  	"focal_y" numeric
+  );
+  
+  CREATE TABLE IF NOT EXISTS "payload_jobs_log" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" uuid NOT NULL,
+  	"id" varchar PRIMARY KEY NOT NULL,
+  	"executed_at" timestamp(3) with time zone NOT NULL,
+  	"completed_at" timestamp(3) with time zone NOT NULL,
+  	"task_slug" "enum_payload_jobs_log_task_slug" NOT NULL,
+  	"task_i_d" varchar NOT NULL,
+  	"input" jsonb,
+  	"output" jsonb,
+  	"state" "enum_payload_jobs_log_state" NOT NULL,
+  	"error" jsonb
+  );
+  
+  CREATE TABLE IF NOT EXISTS "payload_jobs" (
+  	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+  	"input" jsonb,
+  	"completed_at" timestamp(3) with time zone,
+  	"total_tried" numeric DEFAULT 0,
+  	"has_error" boolean DEFAULT false,
+  	"error" jsonb,
+  	"workflow_slug" "enum_payload_jobs_workflow_slug",
+  	"task_slug" "enum_payload_jobs_task_slug",
+  	"queue" varchar DEFAULT 'default',
+  	"wait_until" timestamp(3) with time zone,
+  	"processing" boolean DEFAULT false,
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
+  );
+  
+  CREATE TABLE IF NOT EXISTS "payload_locked_documents" (
+  	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+  	"global_slug" varchar,
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
+  );
+  
+  CREATE TABLE IF NOT EXISTS "payload_locked_documents_rels" (
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"order" integer,
+  	"parent_id" uuid NOT NULL,
+  	"path" varchar NOT NULL,
+  	"pages_id" uuid,
+  	"form_builder_id" uuid,
+  	"form_submission_id" uuid,
+  	"form_hubspot_id" uuid,
+  	"users_id" uuid,
+  	"addresses_id" uuid,
+  	"images_id" uuid,
+  	"icons_id" uuid,
+  	"payload_jobs_id" uuid
+  );
+  
+  CREATE TABLE IF NOT EXISTS "payload_preferences" (
+  	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+  	"key" varchar,
+  	"value" jsonb,
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
+  );
+  
+  CREATE TABLE IF NOT EXISTS "payload_preferences_rels" (
+  	"id" serial PRIMARY KEY NOT NULL,
+  	"order" integer,
+  	"parent_id" uuid NOT NULL,
+  	"path" varchar NOT NULL,
+  	"users_id" uuid
+  );
+  
+  CREATE TABLE IF NOT EXISTS "payload_migrations" (
+  	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+  	"name" varchar,
+  	"batch" numeric,
+  	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
+  	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
+  );
+  
+  CREATE TABLE IF NOT EXISTS "settings_socials_socials" (
+  	"_order" integer NOT NULL,
+  	"_parent_id" uuid NOT NULL,
+  	"id" varchar PRIMARY KEY NOT NULL,
+  	"social_name" varchar,
+  	"social_url" varchar,
+  	"social_icon_id" uuid NOT NULL
+  );
+  
+  CREATE TABLE IF NOT EXISTS "settings" (
+  	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+  	"hubspot_portal_id" varchar,
+  	"hubspot_access_token" varchar,
+  	"updated_at" timestamp(3) with time zone,
+  	"created_at" timestamp(3) with time zone
+  );
+  
+  DO $$ BEGIN
+   ALTER TABLE "pages_blocks_hero_ctas" ADD CONSTRAINT "pages_blocks_hero_ctas_cta_to_pages_id_pages_id_fk" FOREIGN KEY ("cta_to_pages_id") REFERENCES "public"."pages"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "pages_blocks_hero_ctas" ADD CONSTRAINT "pages_blocks_hero_ctas_cta_to_users_id_users_id_fk" FOREIGN KEY ("cta_to_users_id") REFERENCES "public"."users"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "pages_blocks_hero_ctas" ADD CONSTRAINT "pages_blocks_hero_ctas_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_hero"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "pages_blocks_hero" ADD CONSTRAINT "pages_blocks_hero_background_image_id_images_id_fk" FOREIGN KEY ("background_image_id") REFERENCES "public"."images"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "pages_blocks_hero" ADD CONSTRAINT "pages_blocks_hero_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "pages_blocks_carousel" ADD CONSTRAINT "pages_blocks_carousel_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "pages_blocks_column_multiple_text_texts" ADD CONSTRAINT "pages_blocks_column_multiple_text_texts_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_column_multiple_text"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "pages_blocks_column_multiple_text_ctas" ADD CONSTRAINT "pages_blocks_column_multiple_text_ctas_cta_to_pages_id_pages_id_fk" FOREIGN KEY ("cta_to_pages_id") REFERENCES "public"."pages"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "pages_blocks_column_multiple_text_ctas" ADD CONSTRAINT "pages_blocks_column_multiple_text_ctas_cta_to_users_id_users_id_fk" FOREIGN KEY ("cta_to_users_id") REFERENCES "public"."users"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "pages_blocks_column_multiple_text_ctas" ADD CONSTRAINT "pages_blocks_column_multiple_text_ctas_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_column_multiple_text"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "pages_blocks_column_multiple_text" ADD CONSTRAINT "pages_blocks_column_multiple_text_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "pages_blocks_column_text_cta_ctas" ADD CONSTRAINT "pages_blocks_column_text_cta_ctas_cta_to_pages_id_pages_id_fk" FOREIGN KEY ("cta_to_pages_id") REFERENCES "public"."pages"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "pages_blocks_column_text_cta_ctas" ADD CONSTRAINT "pages_blocks_column_text_cta_ctas_cta_to_users_id_users_id_fk" FOREIGN KEY ("cta_to_users_id") REFERENCES "public"."users"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "pages_blocks_column_text_cta_ctas" ADD CONSTRAINT "pages_blocks_column_text_cta_ctas_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_column_text_cta"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "pages_blocks_column_text_cta" ADD CONSTRAINT "pages_blocks_column_text_cta_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "pages_blocks_column_columns" ADD CONSTRAINT "pages_blocks_column_columns_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages_blocks_column"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "pages_blocks_column" ADD CONSTRAINT "pages_blocks_column_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "pages_blocks_hubspot_form" ADD CONSTRAINT "pages_blocks_hubspot_form_hubspot_form_id_form_hubspot_id_fk" FOREIGN KEY ("hubspot_form_id") REFERENCES "public"."form_hubspot"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "pages_blocks_hubspot_form" ADD CONSTRAINT "pages_blocks_hubspot_form_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "pages_blocks_image_text" ADD CONSTRAINT "pages_blocks_image_text_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "pages_blocks_text" ADD CONSTRAINT "pages_blocks_text_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "pages_locales" ADD CONSTRAINT "pages_locales_seo_image_id_images_id_fk" FOREIGN KEY ("seo_image_id") REFERENCES "public"."images"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "pages_locales" ADD CONSTRAINT "pages_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "pages_rels" ADD CONSTRAINT "pages_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "pages_rels" ADD CONSTRAINT "pages_rels_images_fk" FOREIGN KEY ("images_id") REFERENCES "public"."images"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_pages_v_blocks_hero_ctas" ADD CONSTRAINT "_pages_v_blocks_hero_ctas_cta_to_pages_id_pages_id_fk" FOREIGN KEY ("cta_to_pages_id") REFERENCES "public"."pages"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_pages_v_blocks_hero_ctas" ADD CONSTRAINT "_pages_v_blocks_hero_ctas_cta_to_users_id_users_id_fk" FOREIGN KEY ("cta_to_users_id") REFERENCES "public"."users"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_pages_v_blocks_hero_ctas" ADD CONSTRAINT "_pages_v_blocks_hero_ctas_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_hero"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_pages_v_blocks_hero" ADD CONSTRAINT "_pages_v_blocks_hero_background_image_id_images_id_fk" FOREIGN KEY ("background_image_id") REFERENCES "public"."images"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_pages_v_blocks_hero" ADD CONSTRAINT "_pages_v_blocks_hero_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_pages_v_blocks_carousel" ADD CONSTRAINT "_pages_v_blocks_carousel_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_pages_v_blocks_column_multiple_text_texts" ADD CONSTRAINT "_pages_v_blocks_column_multiple_text_texts_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_column_multiple_text"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_pages_v_blocks_column_multiple_text_ctas" ADD CONSTRAINT "_pages_v_blocks_column_multiple_text_ctas_cta_to_pages_id_pages_id_fk" FOREIGN KEY ("cta_to_pages_id") REFERENCES "public"."pages"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_pages_v_blocks_column_multiple_text_ctas" ADD CONSTRAINT "_pages_v_blocks_column_multiple_text_ctas_cta_to_users_id_users_id_fk" FOREIGN KEY ("cta_to_users_id") REFERENCES "public"."users"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_pages_v_blocks_column_multiple_text_ctas" ADD CONSTRAINT "_pages_v_blocks_column_multiple_text_ctas_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_column_multiple_text"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_pages_v_blocks_column_multiple_text" ADD CONSTRAINT "_pages_v_blocks_column_multiple_text_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_pages_v_blocks_column_text_cta_ctas" ADD CONSTRAINT "_pages_v_blocks_column_text_cta_ctas_cta_to_pages_id_pages_id_fk" FOREIGN KEY ("cta_to_pages_id") REFERENCES "public"."pages"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_pages_v_blocks_column_text_cta_ctas" ADD CONSTRAINT "_pages_v_blocks_column_text_cta_ctas_cta_to_users_id_users_id_fk" FOREIGN KEY ("cta_to_users_id") REFERENCES "public"."users"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_pages_v_blocks_column_text_cta_ctas" ADD CONSTRAINT "_pages_v_blocks_column_text_cta_ctas_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_column_text_cta"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_pages_v_blocks_column_text_cta" ADD CONSTRAINT "_pages_v_blocks_column_text_cta_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_pages_v_blocks_column_columns" ADD CONSTRAINT "_pages_v_blocks_column_columns_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v_blocks_column"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_pages_v_blocks_column" ADD CONSTRAINT "_pages_v_blocks_column_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_pages_v_blocks_hubspot_form" ADD CONSTRAINT "_pages_v_blocks_hubspot_form_hubspot_form_id_form_hubspot_id_fk" FOREIGN KEY ("hubspot_form_id") REFERENCES "public"."form_hubspot"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_pages_v_blocks_hubspot_form" ADD CONSTRAINT "_pages_v_blocks_hubspot_form_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_pages_v_blocks_image_text" ADD CONSTRAINT "_pages_v_blocks_image_text_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_pages_v_blocks_text" ADD CONSTRAINT "_pages_v_blocks_text_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_pages_v" ADD CONSTRAINT "_pages_v_parent_id_pages_id_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."pages"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_pages_v_locales" ADD CONSTRAINT "_pages_v_locales_version_seo_image_id_images_id_fk" FOREIGN KEY ("version_seo_image_id") REFERENCES "public"."images"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_pages_v_locales" ADD CONSTRAINT "_pages_v_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_pages_v_rels" ADD CONSTRAINT "_pages_v_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."_pages_v"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "_pages_v_rels" ADD CONSTRAINT "_pages_v_rels_images_fk" FOREIGN KEY ("images_id") REFERENCES "public"."images"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "form_builder_blocks_form_input_block" ADD CONSTRAINT "form_builder_blocks_form_input_block_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."form_builder"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "form_builder_blocks_form_grid_block" ADD CONSTRAINT "form_builder_blocks_form_grid_block_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."form_builder"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "form_builder_locales" ADD CONSTRAINT "form_builder_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."form_builder"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "form_submission" ADD CONSTRAINT "form_submission_form_id_form_builder_id_fk" FOREIGN KEY ("form_id") REFERENCES "public"."form_builder"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "form_hubspot_locales" ADD CONSTRAINT "form_hubspot_locales_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."form_hubspot"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "users_rels" ADD CONSTRAINT "users_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "users_rels" ADD CONSTRAINT "users_rels_addresses_fk" FOREIGN KEY ("addresses_id") REFERENCES "public"."addresses"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "addresses_type" ADD CONSTRAINT "addresses_type_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."addresses"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "payload_jobs_log" ADD CONSTRAINT "payload_jobs_log_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."payload_jobs"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."payload_locked_documents"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_pages_fk" FOREIGN KEY ("pages_id") REFERENCES "public"."pages"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_form_builder_fk" FOREIGN KEY ("form_builder_id") REFERENCES "public"."form_builder"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_form_submission_fk" FOREIGN KEY ("form_submission_id") REFERENCES "public"."form_submission"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_form_hubspot_fk" FOREIGN KEY ("form_hubspot_id") REFERENCES "public"."form_hubspot"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_users_fk" FOREIGN KEY ("users_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_addresses_fk" FOREIGN KEY ("addresses_id") REFERENCES "public"."addresses"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_images_fk" FOREIGN KEY ("images_id") REFERENCES "public"."images"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_icons_fk" FOREIGN KEY ("icons_id") REFERENCES "public"."icons"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "payload_locked_documents_rels" ADD CONSTRAINT "payload_locked_documents_rels_payload_jobs_fk" FOREIGN KEY ("payload_jobs_id") REFERENCES "public"."payload_jobs"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "payload_preferences_rels" ADD CONSTRAINT "payload_preferences_rels_parent_fk" FOREIGN KEY ("parent_id") REFERENCES "public"."payload_preferences"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "payload_preferences_rels" ADD CONSTRAINT "payload_preferences_rels_users_fk" FOREIGN KEY ("users_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "settings_socials_socials" ADD CONSTRAINT "settings_socials_socials_social_icon_id_icons_id_fk" FOREIGN KEY ("social_icon_id") REFERENCES "public"."icons"("id") ON DELETE set null ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  DO $$ BEGIN
+   ALTER TABLE "settings_socials_socials" ADD CONSTRAINT "settings_socials_socials_parent_id_fk" FOREIGN KEY ("_parent_id") REFERENCES "public"."settings"("id") ON DELETE cascade ON UPDATE no action;
+  EXCEPTION
+   WHEN duplicate_object THEN null;
+  END $$;
+  
+  CREATE INDEX IF NOT EXISTS "pages_blocks_hero_ctas_order_idx" ON "pages_blocks_hero_ctas" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_hero_ctas_parent_id_idx" ON "pages_blocks_hero_ctas" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_hero_ctas_locale_idx" ON "pages_blocks_hero_ctas" USING btree ("_locale");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_hero_ctas_cta_cta_to_pages_idx" ON "pages_blocks_hero_ctas" USING btree ("cta_to_pages_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_hero_ctas_cta_cta_to_users_idx" ON "pages_blocks_hero_ctas" USING btree ("cta_to_users_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_hero_order_idx" ON "pages_blocks_hero" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_hero_parent_id_idx" ON "pages_blocks_hero" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_hero_path_idx" ON "pages_blocks_hero" USING btree ("_path");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_hero_locale_idx" ON "pages_blocks_hero" USING btree ("_locale");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_hero_background_image_idx" ON "pages_blocks_hero" USING btree ("background_image_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_carousel_order_idx" ON "pages_blocks_carousel" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_carousel_parent_id_idx" ON "pages_blocks_carousel" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_carousel_path_idx" ON "pages_blocks_carousel" USING btree ("_path");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_carousel_locale_idx" ON "pages_blocks_carousel" USING btree ("_locale");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_column_multiple_text_texts_order_idx" ON "pages_blocks_column_multiple_text_texts" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_column_multiple_text_texts_parent_id_idx" ON "pages_blocks_column_multiple_text_texts" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_column_multiple_text_texts_locale_idx" ON "pages_blocks_column_multiple_text_texts" USING btree ("_locale");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_column_multiple_text_ctas_order_idx" ON "pages_blocks_column_multiple_text_ctas" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_column_multiple_text_ctas_parent_id_idx" ON "pages_blocks_column_multiple_text_ctas" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_column_multiple_text_ctas_locale_idx" ON "pages_blocks_column_multiple_text_ctas" USING btree ("_locale");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_column_multiple_text_ctas_cta_cta_to_pages_idx" ON "pages_blocks_column_multiple_text_ctas" USING btree ("cta_to_pages_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_column_multiple_text_ctas_cta_cta_to_users_idx" ON "pages_blocks_column_multiple_text_ctas" USING btree ("cta_to_users_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_column_multiple_text_order_idx" ON "pages_blocks_column_multiple_text" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_column_multiple_text_parent_id_idx" ON "pages_blocks_column_multiple_text" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_column_multiple_text_path_idx" ON "pages_blocks_column_multiple_text" USING btree ("_path");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_column_multiple_text_locale_idx" ON "pages_blocks_column_multiple_text" USING btree ("_locale");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_column_text_cta_ctas_order_idx" ON "pages_blocks_column_text_cta_ctas" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_column_text_cta_ctas_parent_id_idx" ON "pages_blocks_column_text_cta_ctas" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_column_text_cta_ctas_locale_idx" ON "pages_blocks_column_text_cta_ctas" USING btree ("_locale");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_column_text_cta_ctas_cta_cta_to_pages_idx" ON "pages_blocks_column_text_cta_ctas" USING btree ("cta_to_pages_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_column_text_cta_ctas_cta_cta_to_users_idx" ON "pages_blocks_column_text_cta_ctas" USING btree ("cta_to_users_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_column_text_cta_order_idx" ON "pages_blocks_column_text_cta" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_column_text_cta_parent_id_idx" ON "pages_blocks_column_text_cta" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_column_text_cta_path_idx" ON "pages_blocks_column_text_cta" USING btree ("_path");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_column_text_cta_locale_idx" ON "pages_blocks_column_text_cta" USING btree ("_locale");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_column_columns_order_idx" ON "pages_blocks_column_columns" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_column_columns_parent_id_idx" ON "pages_blocks_column_columns" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_column_columns_locale_idx" ON "pages_blocks_column_columns" USING btree ("_locale");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_column_order_idx" ON "pages_blocks_column" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_column_parent_id_idx" ON "pages_blocks_column" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_column_path_idx" ON "pages_blocks_column" USING btree ("_path");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_column_locale_idx" ON "pages_blocks_column" USING btree ("_locale");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_hubspot_form_order_idx" ON "pages_blocks_hubspot_form" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_hubspot_form_parent_id_idx" ON "pages_blocks_hubspot_form" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_hubspot_form_path_idx" ON "pages_blocks_hubspot_form" USING btree ("_path");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_hubspot_form_locale_idx" ON "pages_blocks_hubspot_form" USING btree ("_locale");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_hubspot_form_hubspot_form_idx" ON "pages_blocks_hubspot_form" USING btree ("hubspot_form_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_image_text_order_idx" ON "pages_blocks_image_text" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_image_text_parent_id_idx" ON "pages_blocks_image_text" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_image_text_path_idx" ON "pages_blocks_image_text" USING btree ("_path");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_image_text_locale_idx" ON "pages_blocks_image_text" USING btree ("_locale");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_text_order_idx" ON "pages_blocks_text" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_text_parent_id_idx" ON "pages_blocks_text" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_text_path_idx" ON "pages_blocks_text" USING btree ("_path");
+  CREATE INDEX IF NOT EXISTS "pages_blocks_text_locale_idx" ON "pages_blocks_text" USING btree ("_locale");
+  CREATE INDEX IF NOT EXISTS "pages_updated_at_idx" ON "pages" USING btree ("updated_at");
+  CREATE INDEX IF NOT EXISTS "pages_created_at_idx" ON "pages" USING btree ("created_at");
+  CREATE INDEX IF NOT EXISTS "pages__status_idx" ON "pages" USING btree ("_status");
+  CREATE INDEX IF NOT EXISTS "pages_seo_seo_image_idx" ON "pages_locales" USING btree ("seo_image_id","_locale");
+  CREATE UNIQUE INDEX IF NOT EXISTS "pages_locales_locale_parent_id_unique" ON "pages_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "pages_rels_order_idx" ON "pages_rels" USING btree ("order");
+  CREATE INDEX IF NOT EXISTS "pages_rels_parent_idx" ON "pages_rels" USING btree ("parent_id");
+  CREATE INDEX IF NOT EXISTS "pages_rels_path_idx" ON "pages_rels" USING btree ("path");
+  CREATE INDEX IF NOT EXISTS "pages_rels_locale_idx" ON "pages_rels" USING btree ("locale");
+  CREATE INDEX IF NOT EXISTS "pages_rels_images_id_idx" ON "pages_rels" USING btree ("images_id","locale");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_hero_ctas_order_idx" ON "_pages_v_blocks_hero_ctas" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_hero_ctas_parent_id_idx" ON "_pages_v_blocks_hero_ctas" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_hero_ctas_locale_idx" ON "_pages_v_blocks_hero_ctas" USING btree ("_locale");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_hero_ctas_cta_cta_to_pages_idx" ON "_pages_v_blocks_hero_ctas" USING btree ("cta_to_pages_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_hero_ctas_cta_cta_to_users_idx" ON "_pages_v_blocks_hero_ctas" USING btree ("cta_to_users_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_hero_order_idx" ON "_pages_v_blocks_hero" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_hero_parent_id_idx" ON "_pages_v_blocks_hero" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_hero_path_idx" ON "_pages_v_blocks_hero" USING btree ("_path");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_hero_locale_idx" ON "_pages_v_blocks_hero" USING btree ("_locale");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_hero_background_image_idx" ON "_pages_v_blocks_hero" USING btree ("background_image_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_carousel_order_idx" ON "_pages_v_blocks_carousel" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_carousel_parent_id_idx" ON "_pages_v_blocks_carousel" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_carousel_path_idx" ON "_pages_v_blocks_carousel" USING btree ("_path");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_carousel_locale_idx" ON "_pages_v_blocks_carousel" USING btree ("_locale");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_column_multiple_text_texts_order_idx" ON "_pages_v_blocks_column_multiple_text_texts" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_column_multiple_text_texts_parent_id_idx" ON "_pages_v_blocks_column_multiple_text_texts" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_column_multiple_text_texts_locale_idx" ON "_pages_v_blocks_column_multiple_text_texts" USING btree ("_locale");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_column_multiple_text_ctas_order_idx" ON "_pages_v_blocks_column_multiple_text_ctas" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_column_multiple_text_ctas_parent_id_idx" ON "_pages_v_blocks_column_multiple_text_ctas" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_column_multiple_text_ctas_locale_idx" ON "_pages_v_blocks_column_multiple_text_ctas" USING btree ("_locale");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_column_multiple_text_ctas_cta_cta_to_pages_idx" ON "_pages_v_blocks_column_multiple_text_ctas" USING btree ("cta_to_pages_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_column_multiple_text_ctas_cta_cta_to_users_idx" ON "_pages_v_blocks_column_multiple_text_ctas" USING btree ("cta_to_users_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_column_multiple_text_order_idx" ON "_pages_v_blocks_column_multiple_text" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_column_multiple_text_parent_id_idx" ON "_pages_v_blocks_column_multiple_text" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_column_multiple_text_path_idx" ON "_pages_v_blocks_column_multiple_text" USING btree ("_path");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_column_multiple_text_locale_idx" ON "_pages_v_blocks_column_multiple_text" USING btree ("_locale");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_column_text_cta_ctas_order_idx" ON "_pages_v_blocks_column_text_cta_ctas" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_column_text_cta_ctas_parent_id_idx" ON "_pages_v_blocks_column_text_cta_ctas" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_column_text_cta_ctas_locale_idx" ON "_pages_v_blocks_column_text_cta_ctas" USING btree ("_locale");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_column_text_cta_ctas_cta_cta_to_pages_idx" ON "_pages_v_blocks_column_text_cta_ctas" USING btree ("cta_to_pages_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_column_text_cta_ctas_cta_cta_to_users_idx" ON "_pages_v_blocks_column_text_cta_ctas" USING btree ("cta_to_users_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_column_text_cta_order_idx" ON "_pages_v_blocks_column_text_cta" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_column_text_cta_parent_id_idx" ON "_pages_v_blocks_column_text_cta" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_column_text_cta_path_idx" ON "_pages_v_blocks_column_text_cta" USING btree ("_path");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_column_text_cta_locale_idx" ON "_pages_v_blocks_column_text_cta" USING btree ("_locale");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_column_columns_order_idx" ON "_pages_v_blocks_column_columns" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_column_columns_parent_id_idx" ON "_pages_v_blocks_column_columns" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_column_columns_locale_idx" ON "_pages_v_blocks_column_columns" USING btree ("_locale");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_column_order_idx" ON "_pages_v_blocks_column" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_column_parent_id_idx" ON "_pages_v_blocks_column" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_column_path_idx" ON "_pages_v_blocks_column" USING btree ("_path");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_column_locale_idx" ON "_pages_v_blocks_column" USING btree ("_locale");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_hubspot_form_order_idx" ON "_pages_v_blocks_hubspot_form" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_hubspot_form_parent_id_idx" ON "_pages_v_blocks_hubspot_form" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_hubspot_form_path_idx" ON "_pages_v_blocks_hubspot_form" USING btree ("_path");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_hubspot_form_locale_idx" ON "_pages_v_blocks_hubspot_form" USING btree ("_locale");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_hubspot_form_hubspot_form_idx" ON "_pages_v_blocks_hubspot_form" USING btree ("hubspot_form_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_image_text_order_idx" ON "_pages_v_blocks_image_text" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_image_text_parent_id_idx" ON "_pages_v_blocks_image_text" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_image_text_path_idx" ON "_pages_v_blocks_image_text" USING btree ("_path");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_image_text_locale_idx" ON "_pages_v_blocks_image_text" USING btree ("_locale");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_text_order_idx" ON "_pages_v_blocks_text" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_text_parent_id_idx" ON "_pages_v_blocks_text" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_text_path_idx" ON "_pages_v_blocks_text" USING btree ("_path");
+  CREATE INDEX IF NOT EXISTS "_pages_v_blocks_text_locale_idx" ON "_pages_v_blocks_text" USING btree ("_locale");
+  CREATE INDEX IF NOT EXISTS "_pages_v_parent_idx" ON "_pages_v" USING btree ("parent_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_version_version_updated_at_idx" ON "_pages_v" USING btree ("version_updated_at");
+  CREATE INDEX IF NOT EXISTS "_pages_v_version_version_created_at_idx" ON "_pages_v" USING btree ("version_created_at");
+  CREATE INDEX IF NOT EXISTS "_pages_v_version_version__status_idx" ON "_pages_v" USING btree ("version__status");
+  CREATE INDEX IF NOT EXISTS "_pages_v_created_at_idx" ON "_pages_v" USING btree ("created_at");
+  CREATE INDEX IF NOT EXISTS "_pages_v_updated_at_idx" ON "_pages_v" USING btree ("updated_at");
+  CREATE INDEX IF NOT EXISTS "_pages_v_snapshot_idx" ON "_pages_v" USING btree ("snapshot");
+  CREATE INDEX IF NOT EXISTS "_pages_v_published_locale_idx" ON "_pages_v" USING btree ("published_locale");
+  CREATE INDEX IF NOT EXISTS "_pages_v_latest_idx" ON "_pages_v" USING btree ("latest");
+  CREATE INDEX IF NOT EXISTS "_pages_v_autosave_idx" ON "_pages_v" USING btree ("autosave");
+  CREATE INDEX IF NOT EXISTS "_pages_v_version_seo_version_seo_image_idx" ON "_pages_v_locales" USING btree ("version_seo_image_id","_locale");
+  CREATE UNIQUE INDEX IF NOT EXISTS "_pages_v_locales_locale_parent_id_unique" ON "_pages_v_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_rels_order_idx" ON "_pages_v_rels" USING btree ("order");
+  CREATE INDEX IF NOT EXISTS "_pages_v_rels_parent_idx" ON "_pages_v_rels" USING btree ("parent_id");
+  CREATE INDEX IF NOT EXISTS "_pages_v_rels_path_idx" ON "_pages_v_rels" USING btree ("path");
+  CREATE INDEX IF NOT EXISTS "_pages_v_rels_locale_idx" ON "_pages_v_rels" USING btree ("locale");
+  CREATE INDEX IF NOT EXISTS "_pages_v_rels_images_id_idx" ON "_pages_v_rels" USING btree ("images_id","locale");
+  CREATE INDEX IF NOT EXISTS "form_builder_blocks_form_input_block_order_idx" ON "form_builder_blocks_form_input_block" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "form_builder_blocks_form_input_block_parent_id_idx" ON "form_builder_blocks_form_input_block" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "form_builder_blocks_form_input_block_path_idx" ON "form_builder_blocks_form_input_block" USING btree ("_path");
+  CREATE INDEX IF NOT EXISTS "form_builder_blocks_form_grid_block_order_idx" ON "form_builder_blocks_form_grid_block" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "form_builder_blocks_form_grid_block_parent_id_idx" ON "form_builder_blocks_form_grid_block" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "form_builder_blocks_form_grid_block_path_idx" ON "form_builder_blocks_form_grid_block" USING btree ("_path");
+  CREATE INDEX IF NOT EXISTS "form_builder_updated_at_idx" ON "form_builder" USING btree ("updated_at");
+  CREATE INDEX IF NOT EXISTS "form_builder_created_at_idx" ON "form_builder" USING btree ("created_at");
+  CREATE UNIQUE INDEX IF NOT EXISTS "form_builder_locales_locale_parent_id_unique" ON "form_builder_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "form_submission_form_idx" ON "form_submission" USING btree ("form_id");
+  CREATE INDEX IF NOT EXISTS "form_submission_updated_at_idx" ON "form_submission" USING btree ("updated_at");
+  CREATE INDEX IF NOT EXISTS "form_submission_created_at_idx" ON "form_submission" USING btree ("created_at");
+  CREATE INDEX IF NOT EXISTS "form_hubspot_updated_at_idx" ON "form_hubspot" USING btree ("updated_at");
+  CREATE INDEX IF NOT EXISTS "form_hubspot_created_at_idx" ON "form_hubspot" USING btree ("created_at");
+  CREATE UNIQUE INDEX IF NOT EXISTS "form_hubspot_locales_locale_parent_id_unique" ON "form_hubspot_locales" USING btree ("_locale","_parent_id");
+  CREATE INDEX IF NOT EXISTS "users_updated_at_idx" ON "users" USING btree ("updated_at");
+  CREATE INDEX IF NOT EXISTS "users_created_at_idx" ON "users" USING btree ("created_at");
+  CREATE UNIQUE INDEX IF NOT EXISTS "users_email_idx" ON "users" USING btree ("email");
+  CREATE INDEX IF NOT EXISTS "users_rels_order_idx" ON "users_rels" USING btree ("order");
+  CREATE INDEX IF NOT EXISTS "users_rels_parent_idx" ON "users_rels" USING btree ("parent_id");
+  CREATE INDEX IF NOT EXISTS "users_rels_path_idx" ON "users_rels" USING btree ("path");
+  CREATE INDEX IF NOT EXISTS "users_rels_addresses_id_idx" ON "users_rels" USING btree ("addresses_id");
+  CREATE INDEX IF NOT EXISTS "addresses_type_order_idx" ON "addresses_type" USING btree ("order");
+  CREATE INDEX IF NOT EXISTS "addresses_type_parent_idx" ON "addresses_type" USING btree ("parent_id");
+  CREATE INDEX IF NOT EXISTS "addresses_updated_at_idx" ON "addresses" USING btree ("updated_at");
+  CREATE INDEX IF NOT EXISTS "addresses_created_at_idx" ON "addresses" USING btree ("created_at");
+  CREATE INDEX IF NOT EXISTS "images_updated_at_idx" ON "images" USING btree ("updated_at");
+  CREATE INDEX IF NOT EXISTS "images_created_at_idx" ON "images" USING btree ("created_at");
+  CREATE UNIQUE INDEX IF NOT EXISTS "images_filename_idx" ON "images" USING btree ("filename");
+  CREATE INDEX IF NOT EXISTS "images_sizes_thumbnail_sizes_thumbnail_filename_idx" ON "images" USING btree ("sizes_thumbnail_filename");
+  CREATE INDEX IF NOT EXISTS "images_sizes_card_sizes_card_filename_idx" ON "images" USING btree ("sizes_card_filename");
+  CREATE INDEX IF NOT EXISTS "images_sizes_tablet_sizes_tablet_filename_idx" ON "images" USING btree ("sizes_tablet_filename");
+  CREATE INDEX IF NOT EXISTS "images_sizes_desktop_sizes_desktop_filename_idx" ON "images" USING btree ("sizes_desktop_filename");
+  CREATE INDEX IF NOT EXISTS "images_sizes_background_sizes_background_filename_idx" ON "images" USING btree ("sizes_background_filename");
+  CREATE INDEX IF NOT EXISTS "icons_updated_at_idx" ON "icons" USING btree ("updated_at");
+  CREATE INDEX IF NOT EXISTS "icons_created_at_idx" ON "icons" USING btree ("created_at");
+  CREATE UNIQUE INDEX IF NOT EXISTS "icons_filename_idx" ON "icons" USING btree ("filename");
+  CREATE INDEX IF NOT EXISTS "payload_jobs_log_order_idx" ON "payload_jobs_log" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "payload_jobs_log_parent_id_idx" ON "payload_jobs_log" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "payload_jobs_completed_at_idx" ON "payload_jobs" USING btree ("completed_at");
+  CREATE INDEX IF NOT EXISTS "payload_jobs_total_tried_idx" ON "payload_jobs" USING btree ("total_tried");
+  CREATE INDEX IF NOT EXISTS "payload_jobs_has_error_idx" ON "payload_jobs" USING btree ("has_error");
+  CREATE INDEX IF NOT EXISTS "payload_jobs_workflow_slug_idx" ON "payload_jobs" USING btree ("workflow_slug");
+  CREATE INDEX IF NOT EXISTS "payload_jobs_task_slug_idx" ON "payload_jobs" USING btree ("task_slug");
+  CREATE INDEX IF NOT EXISTS "payload_jobs_queue_idx" ON "payload_jobs" USING btree ("queue");
+  CREATE INDEX IF NOT EXISTS "payload_jobs_wait_until_idx" ON "payload_jobs" USING btree ("wait_until");
+  CREATE INDEX IF NOT EXISTS "payload_jobs_processing_idx" ON "payload_jobs" USING btree ("processing");
+  CREATE INDEX IF NOT EXISTS "payload_jobs_updated_at_idx" ON "payload_jobs" USING btree ("updated_at");
+  CREATE INDEX IF NOT EXISTS "payload_jobs_created_at_idx" ON "payload_jobs" USING btree ("created_at");
+  CREATE INDEX IF NOT EXISTS "payload_locked_documents_global_slug_idx" ON "payload_locked_documents" USING btree ("global_slug");
+  CREATE INDEX IF NOT EXISTS "payload_locked_documents_updated_at_idx" ON "payload_locked_documents" USING btree ("updated_at");
+  CREATE INDEX IF NOT EXISTS "payload_locked_documents_created_at_idx" ON "payload_locked_documents" USING btree ("created_at");
+  CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_order_idx" ON "payload_locked_documents_rels" USING btree ("order");
+  CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_parent_idx" ON "payload_locked_documents_rels" USING btree ("parent_id");
+  CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_path_idx" ON "payload_locked_documents_rels" USING btree ("path");
+  CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_pages_id_idx" ON "payload_locked_documents_rels" USING btree ("pages_id");
+  CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_form_builder_id_idx" ON "payload_locked_documents_rels" USING btree ("form_builder_id");
+  CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_form_submission_id_idx" ON "payload_locked_documents_rels" USING btree ("form_submission_id");
+  CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_form_hubspot_id_idx" ON "payload_locked_documents_rels" USING btree ("form_hubspot_id");
+  CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_users_id_idx" ON "payload_locked_documents_rels" USING btree ("users_id");
+  CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_addresses_id_idx" ON "payload_locked_documents_rels" USING btree ("addresses_id");
+  CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_images_id_idx" ON "payload_locked_documents_rels" USING btree ("images_id");
+  CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_icons_id_idx" ON "payload_locked_documents_rels" USING btree ("icons_id");
+  CREATE INDEX IF NOT EXISTS "payload_locked_documents_rels_payload_jobs_id_idx" ON "payload_locked_documents_rels" USING btree ("payload_jobs_id");
+  CREATE INDEX IF NOT EXISTS "payload_preferences_key_idx" ON "payload_preferences" USING btree ("key");
+  CREATE INDEX IF NOT EXISTS "payload_preferences_updated_at_idx" ON "payload_preferences" USING btree ("updated_at");
+  CREATE INDEX IF NOT EXISTS "payload_preferences_created_at_idx" ON "payload_preferences" USING btree ("created_at");
+  CREATE INDEX IF NOT EXISTS "payload_preferences_rels_order_idx" ON "payload_preferences_rels" USING btree ("order");
+  CREATE INDEX IF NOT EXISTS "payload_preferences_rels_parent_idx" ON "payload_preferences_rels" USING btree ("parent_id");
+  CREATE INDEX IF NOT EXISTS "payload_preferences_rels_path_idx" ON "payload_preferences_rels" USING btree ("path");
+  CREATE INDEX IF NOT EXISTS "payload_preferences_rels_users_id_idx" ON "payload_preferences_rels" USING btree ("users_id");
+  CREATE INDEX IF NOT EXISTS "payload_migrations_updated_at_idx" ON "payload_migrations" USING btree ("updated_at");
+  CREATE INDEX IF NOT EXISTS "payload_migrations_created_at_idx" ON "payload_migrations" USING btree ("created_at");
+  CREATE INDEX IF NOT EXISTS "settings_socials_socials_order_idx" ON "settings_socials_socials" USING btree ("_order");
+  CREATE INDEX IF NOT EXISTS "settings_socials_socials_parent_id_idx" ON "settings_socials_socials" USING btree ("_parent_id");
+  CREATE INDEX IF NOT EXISTS "settings_socials_socials_social_social_icon_idx" ON "settings_socials_socials" USING btree ("social_icon_id");`)
+}
+
+export async function down({ db, payload, req }: MigrateDownArgs): Promise<void> {
+  await db.execute(sql`
+   DROP TABLE "pages_blocks_hero_ctas" CASCADE;
+  DROP TABLE "pages_blocks_hero" CASCADE;
+  DROP TABLE "pages_blocks_carousel" CASCADE;
+  DROP TABLE "pages_blocks_column_multiple_text_texts" CASCADE;
+  DROP TABLE "pages_blocks_column_multiple_text_ctas" CASCADE;
+  DROP TABLE "pages_blocks_column_multiple_text" CASCADE;
+  DROP TABLE "pages_blocks_column_text_cta_ctas" CASCADE;
+  DROP TABLE "pages_blocks_column_text_cta" CASCADE;
+  DROP TABLE "pages_blocks_column_columns" CASCADE;
+  DROP TABLE "pages_blocks_column" CASCADE;
+  DROP TABLE "pages_blocks_hubspot_form" CASCADE;
+  DROP TABLE "pages_blocks_image_text" CASCADE;
+  DROP TABLE "pages_blocks_text" CASCADE;
+  DROP TABLE "pages" CASCADE;
+  DROP TABLE "pages_locales" CASCADE;
+  DROP TABLE "pages_rels" CASCADE;
+  DROP TABLE "_pages_v_blocks_hero_ctas" CASCADE;
+  DROP TABLE "_pages_v_blocks_hero" CASCADE;
+  DROP TABLE "_pages_v_blocks_carousel" CASCADE;
+  DROP TABLE "_pages_v_blocks_column_multiple_text_texts" CASCADE;
+  DROP TABLE "_pages_v_blocks_column_multiple_text_ctas" CASCADE;
+  DROP TABLE "_pages_v_blocks_column_multiple_text" CASCADE;
+  DROP TABLE "_pages_v_blocks_column_text_cta_ctas" CASCADE;
+  DROP TABLE "_pages_v_blocks_column_text_cta" CASCADE;
+  DROP TABLE "_pages_v_blocks_column_columns" CASCADE;
+  DROP TABLE "_pages_v_blocks_column" CASCADE;
+  DROP TABLE "_pages_v_blocks_hubspot_form" CASCADE;
+  DROP TABLE "_pages_v_blocks_image_text" CASCADE;
+  DROP TABLE "_pages_v_blocks_text" CASCADE;
+  DROP TABLE "_pages_v" CASCADE;
+  DROP TABLE "_pages_v_locales" CASCADE;
+  DROP TABLE "_pages_v_rels" CASCADE;
+  DROP TABLE "form_builder_blocks_form_input_block" CASCADE;
+  DROP TABLE "form_builder_blocks_form_grid_block" CASCADE;
+  DROP TABLE "form_builder" CASCADE;
+  DROP TABLE "form_builder_locales" CASCADE;
+  DROP TABLE "form_submission" CASCADE;
+  DROP TABLE "form_hubspot" CASCADE;
+  DROP TABLE "form_hubspot_locales" CASCADE;
+  DROP TABLE "users" CASCADE;
+  DROP TABLE "users_rels" CASCADE;
+  DROP TABLE "addresses_type" CASCADE;
+  DROP TABLE "addresses" CASCADE;
+  DROP TABLE "images" CASCADE;
+  DROP TABLE "icons" CASCADE;
+  DROP TABLE "payload_jobs_log" CASCADE;
+  DROP TABLE "payload_jobs" CASCADE;
+  DROP TABLE "payload_locked_documents" CASCADE;
+  DROP TABLE "payload_locked_documents_rels" CASCADE;
+  DROP TABLE "payload_preferences" CASCADE;
+  DROP TABLE "payload_preferences_rels" CASCADE;
+  DROP TABLE "payload_migrations" CASCADE;
+  DROP TABLE "settings_socials_socials" CASCADE;
+  DROP TABLE "settings" CASCADE;
+  DROP TYPE "public"."_locales";
+  DROP TYPE "public"."route_fragment_type";
+  DROP TYPE "public"."enum_pages_status";
+  DROP TYPE "public"."enum__pages_v_version_status";
+  DROP TYPE "public"."enum__pages_v_published_locale";
+  DROP TYPE "public"."enum_form_builder_blocks_form_input_block_type";
+  DROP TYPE "public"."enum_users_role";
+  DROP TYPE "public"."enum_addresses_type";
+  DROP TYPE "public"."enum_payload_jobs_log_task_slug";
+  DROP TYPE "public"."enum_payload_jobs_log_state";
+  DROP TYPE "public"."enum_payload_jobs_workflow_slug";
+  DROP TYPE "public"."enum_payload_jobs_task_slug";`)
+}
