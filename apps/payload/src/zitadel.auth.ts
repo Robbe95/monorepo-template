@@ -56,6 +56,10 @@ export const zitadalStrategy: AuthStrategy = {
         })
       }
 
+      if (singleUser.role === 'user') {
+        return USER_NOT_AUTHENTICATED
+      }
+
       return {
         user: {
           id: singleUser.id,
