@@ -4,6 +4,7 @@ import {
   getCookie,
   setCookie,
 } from 'cookies-next'
+import type { NextRequest, NextResponse } from 'next/server'
 // import { useCookies } from 'next-client-cookies'
 
 export interface AuthResponse {
@@ -40,10 +41,10 @@ export function setAuthCookie(authResponse: AuthResponse) {
   setCookie('expires_at', expiresAt.toString())
 }
 
-export async function getAuthData(): Promise<AuthData | null> {
-  const accessToken = await getCookie('access_token')
-  const refreshToken = await getCookie('refresh_token')
-  const expiresAt = await getCookie('expires_at')
+export async function getAuthData({ req, res }: { req: NextRequest, res: NextResponse }): Promise<AuthData | null> {
+  const accessToken = await getCookie('access_token', { req, res })
+  const refreshToken = await getCookie('refresh_token', { req, res })
+  const expiresAt = await getCookie('expires_at', { req, res })
 
   if (accessToken == null || refreshToken == null || expiresAt == null) {
     return null

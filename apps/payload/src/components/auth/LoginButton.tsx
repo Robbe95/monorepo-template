@@ -9,6 +9,7 @@ import React, { useEffect, useState } from 'react'
 
 async function getLoginUrl(): Promise<string> {
   const env = getEnv()
+
   const searchParams = new URLSearchParams()
   let codeChallenge = await getCookie('code_challenge')
 
@@ -24,14 +25,14 @@ async function getLoginUrl(): Promise<string> {
   const scopes = DEFAULT_SCOPES
 
   searchParams.append('client_id', `290541882453367555@template`)
-  searchParams.append('redirect_uri', `${`http://localhost:5173`}/auth/callback`)
+  searchParams.append('redirect_uri', `${env.CMS_BASE_URL}/auth/callback`)
   searchParams.append('response_type', 'code')
   searchParams.append('prompt', 'login')
   searchParams.append('scope', scopes.join(' '))
   searchParams.append('code_challenge', codeChallenge)
   searchParams.append('code_challenge_method', 'S256')
 
-  return `${`https://zitadel.internal.appwi.se`}/oauth/v2/authorize?${searchParams.toString()}`
+  return `${env.AUTH_BASE_URL}/oauth/v2/authorize?${searchParams.toString()}`
 }
 
 function LoginButton() {
@@ -48,19 +49,21 @@ function LoginButton() {
   }, [])
 
   return (
-    <a
-      className="btn btn--style-primary btn--icon-style-without-border btn--size-medium"
-      style={{
-        display: 'block',
-        textAlign: 'center',
-        width: '100%',
-      }}
-      href={url ?? ''}
-    >
-      { url }
+    <div>
+      <a
+        className="btn btn--style-primary btn--icon-style-without-border btn--size-medium"
+        style={{
+          display: 'block',
+          textAlign: 'center',
+          width: '100%',
+        }}
+        href={url ?? ''}
+      >
 
-      Sign in
-    </a>
+        Sign in
+      </a>
+    </div>
+
   )
 }
 

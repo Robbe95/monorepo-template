@@ -1,15 +1,7 @@
-import {
-  type AuthResponse,
-  setAuthCookie,
-} from '@payload/auth/authData'
+import { setAuthCookie } from '@payload/auth/authData'
 import { getEnv } from '@payload/env'
-import { getCookie } from 'cookies-next'
 
-export async function loginWithCode(code: string): Promise<AuthResponse> {
-  const codeVerifier = await getCookie('code_verifier')
-
-  console.log('codeVerifier', codeVerifier)
-
+export async function loginWithCode(code: string, codeVerifier: string): Promise<{ success: boolean }> {
   if (codeVerifier == null) {
     throw new Error('Code verifier not found')
   }
@@ -30,9 +22,11 @@ export async function loginWithCode(code: string): Promise<AuthResponse> {
     method: 'POST',
   })
 
-  const data = await response.json()
+  const body = await response.json()
 
-  setAuthCookie(data)
+  setAuthCookie(body)
 
-  return data
+  return {
+    success: true,
+  }
 }

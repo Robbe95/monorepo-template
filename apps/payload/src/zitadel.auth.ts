@@ -22,6 +22,8 @@ export const zitadalStrategy: AuthStrategy = {
       return USER_NOT_AUTHENTICATED
     }
 
+    console.log('Bearer token', env.AUTH_JWKS_ENDPOINT)
+
     const jwk = createRemoteJWKSet(new URL(env.AUTH_JWKS_ENDPOINT))
 
     try {
@@ -30,7 +32,11 @@ export const zitadalStrategy: AuthStrategy = {
         audience: env.AUTH_PROJECT_ID,
       })
 
+      console.log('JWT verify response', jwtVerifyResponse)
+
       const userEmail = jwtVerifyResponse.payload.email as string
+
+      console.log('User email', userEmail)
 
       const users = await payload.find({
         collection: 'users',
