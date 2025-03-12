@@ -74,6 +74,7 @@ export interface Config {
   auth: {
     users: UserAuthOperations;
   };
+  blocks: {};
   collections: {
     pages: Page;
     'form-builder': FormBuilder;
@@ -83,6 +84,7 @@ export interface Config {
     addresses: Address;
     images: Image;
     icons: Icon;
+    blogs: Blog;
     'payload-jobs': PayloadJob;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -102,6 +104,7 @@ export interface Config {
     addresses: AddressesSelect<false> | AddressesSelect<true>;
     images: ImagesSelect<false> | ImagesSelect<true>;
     icons: IconsSelect<false> | IconsSelect<true>;
+    blogs: BlogsSelect<false> | BlogsSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -419,9 +422,10 @@ export interface FormBuilder {
   title: string;
   builder?: (FormInputBlock | FormGridBlock)[] | null;
   submissions?: {
-    docs?: (string | FormSubmission)[] | null;
-    hasNextPage?: boolean | null;
-  } | null;
+    docs?: (string | FormSubmission)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -486,6 +490,32 @@ export interface Icon {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blogs".
+ */
+export interface Blog {
+  id: string;
+  title: string;
+  slug: string;
+  blog: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -618,6 +648,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'icons';
         value: string | Icon;
+      } | null)
+    | ({
+        relationTo: 'blogs';
+        value: string | Blog;
       } | null)
     | ({
         relationTo: 'payload-jobs';
@@ -1019,6 +1053,17 @@ export interface IconsSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blogs_select".
+ */
+export interface BlogsSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  blog?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
