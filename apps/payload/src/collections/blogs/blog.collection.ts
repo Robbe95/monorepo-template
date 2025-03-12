@@ -1,4 +1,8 @@
-import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { pageBlocks } from '@payload/blocks/page/page.blocks'
+import {
+  BlocksFeature,
+  lexicalEditor,
+} from '@payloadcms/richtext-lexical'
 import type { CollectionConfig } from 'payload'
 
 export const blogCollection: CollectionConfig = {
@@ -38,7 +42,18 @@ export const blogCollection: CollectionConfig = {
     },
     {
       name: 'blog',
-      editor: lexicalEditor({}),
+      editor: lexicalEditor({
+        features: ({ defaultFeatures, rootFeatures }) => [
+          ...defaultFeatures,
+          BlocksFeature({
+            blocks: [
+              ...pageBlocks,
+            ],
+
+          }),
+
+        ],
+      }),
       required: true,
       type: 'richText',
     },

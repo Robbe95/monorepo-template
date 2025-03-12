@@ -1,3 +1,4 @@
+import { blogCollection } from '@payload/collections/blogs/blog.collection'
 import { formCollections } from '@payload/collections/form/form.collections'
 import { mediaCollections } from '@payload/collections/medias/media.collections'
 import { pageCollections } from '@payload/collections/pages/page.collections'
@@ -8,4 +9,5 @@ export default [
   ...formCollections,
   ...userCollections,
   ...mediaCollections,
+  blogCollection,
 ]

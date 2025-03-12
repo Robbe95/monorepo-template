@@ -12,7 +12,6 @@ import { setCollectionGroups } from '@payload/payload.nav'
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
-// import { slateEditor } from '@payloadcms/richtext-slate'
 import { s3Storage } from '@payloadcms/storage-s3'
 import { buildConfig } from 'payload'
 import { en } from 'payload/i18n/en'
@@ -56,7 +55,6 @@ export default buildConfig({
       connectionString: process.env.POSTGRES_URI ?? '',
     },
   }),
-  // editor: slateEditor({}),
   editor: lexicalEditor(),
   i18n: {
     supportedLanguages: { en, nl },
