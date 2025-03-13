@@ -1,5 +1,5 @@
 import { publicProcedure } from '@payload/trpc/procedures/public.procedure'
-import { getPayload } from '@payload/utils/getPayload.util'
+import { getPayload } from '@payload/utils/payload/getPayload.util'
 import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 

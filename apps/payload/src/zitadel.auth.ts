@@ -1,5 +1,5 @@
 import { getEnv } from '@payload/env'
-import { getPayload } from '@payload/utils/getPayload.util'
+import { getPayload } from '@payload/utils/payload/getPayload.util'
 import {
   createRemoteJWKSet,
   jwtVerify,

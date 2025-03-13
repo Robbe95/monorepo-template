@@ -1,5 +1,5 @@
 /* eslint-disable check-file/folder-naming-convention */
-import { getPayload } from '@payload/utils/getPayload.util'
+import { getPayload } from '@payload/utils/payload/getPayload.util'
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 
@@ -89,7 +89,7 @@ async function postHubspotForm(request: NextRequest, { params }: { params: Promi
 
   const hubspotBody = {
     portalId: hubspotPortalId,
-    submittedAt: new Date().getTime(),
+    submittedAt: Date.now(),
     fields: hubspotFields,
     legalConsentOptions: legalConsetHubspot,
   }

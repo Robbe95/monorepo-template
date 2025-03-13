@@ -1,5 +1,5 @@
-import { getLocale } from '@payload/utils/getLocale.util'
-import { getPayload } from '@payload/utils/getPayload.util'
+import { getLocale } from '@payload/utils/locale/getLocale.util'
+import { getPayload } from '@payload/utils/payload/getPayload.util'
 import { convertLocale } from '@repo/utils'
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'

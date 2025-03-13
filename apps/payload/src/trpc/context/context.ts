@@ -1,4 +1,4 @@
-import { getPayload } from '@payload/utils/getPayload.util'
+import { getPayload } from '@payload/utils/payload/getPayload.util'
 import type { inferAsyncReturnType } from '@trpc/server'
 import type { TypedLocale } from 'payload'
 

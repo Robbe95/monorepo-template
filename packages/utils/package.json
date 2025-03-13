@@ -11,7 +11,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@repo/models": "workspace:*"
+    "@repo/models": "workspace:*",
+    "@repo/payload-types": "workspace:*"
   },
   "devDependencies": {
     "@wisemen/eslint-config-vue": "catalog:",

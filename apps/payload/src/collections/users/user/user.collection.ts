@@ -3,9 +3,9 @@ import {
   LOCK_TIME,
   MAX_LOGIN_ATTEMPTS,
 } from '@payload/constants/auth.constant'
-import { isAdmin } from '@payload/utils/access/isAdmin.util'
 import { zitadalStrategy } from '@payload/zitadel.auth'
 import { tenantsArrayField } from '@payloadcms/plugin-multi-tenant/fields'
+import { isAdmin } from '@repo/utils'
 // import { zitadalStrategy } from '@payload/zitadel.auth'
 import type { CollectionConfig } from 'payload'
 
