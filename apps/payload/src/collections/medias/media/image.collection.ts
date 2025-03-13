@@ -1,3 +1,4 @@
+import { getUploadName } from '@payload/utils/upload/getUploadName.util'
 import type { CollectionConfig } from 'payload'
 
 export const imageCollection: CollectionConfig = {
@@ -7,6 +8,17 @@ export const imageCollection: CollectionConfig = {
       type: 'text',
     },
   ],
+  hooks: {
+    beforeOperation: [
+      (req) => {
+        if (req.operation === 'create') {
+          if (req.req.file) {
+            req.req.file.name = getUploadName(req.req.file.name).fileNameWithExtension
+          }
+        }
+      },
+    ],
+  },
   slug: 'images',
   upload: {
     adminThumbnail: 'thumbnail',
@@ -18,6 +30,9 @@ export const imageCollection: CollectionConfig = {
           options: {
             quality: 80,
           },
+        },
+        generateImageName: (doc) => {
+          return `${doc.originalName}_thumbnail.webp`
         },
         height: undefined,
         position: 'centre',
@@ -32,6 +47,9 @@ export const imageCollection: CollectionConfig = {
             quality: 80,
           },
         },
+        generateImageName: (doc) => {
+          return `${doc.originalName}_card.webp`
+        },
         height: undefined,
         position: 'centre',
         width: 768,
@@ -44,6 +62,9 @@ export const imageCollection: CollectionConfig = {
           options: {
             quality: 80,
           },
+        },
+        generateImageName: (doc) => {
+          return `${doc.originalName}_tablet.webp`
         },
         height: undefined,
         position: 'centre',
@@ -58,6 +79,9 @@ export const imageCollection: CollectionConfig = {
             quality: 80,
           },
         },
+        generateImageName: (doc) => {
+          return `${doc.originalName}_desktop.webp`
+        },
         height: undefined,
         position: 'centre',
         width: 1280,
@@ -70,6 +94,9 @@ export const imageCollection: CollectionConfig = {
           options: {
             quality: 80,
           },
+        },
+        generateImageName: (doc) => {
+          return `${doc.originalName}_background.webp`
         },
         height: undefined,
         position: 'centre',

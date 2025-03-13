@@ -29,5 +29,5 @@ export async function refreshToken() {
 
   const data = await response.json() as AuthResponse
 
-  await setAuthCookie(data)
+  setAuthCookie(data)
 }

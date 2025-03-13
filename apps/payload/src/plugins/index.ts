@@ -4,7 +4,7 @@ import { pluginSeo } from '@payload/plugins/seo.plugin'
 import type { Plugin } from 'payload'
 
 export const plugins: Plugin[] = [
-  pluginSeo,
-  pluginStorage,
-  pluginMultiTentant,
+  pluginSeo(),
+  pluginStorage(),
+  pluginMultiTentant(),
 ]

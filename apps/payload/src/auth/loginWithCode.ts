@@ -1,14 +1,7 @@
-import {
-  type AuthResponse,
-  setAuthCookie,
-} from '@payload/auth/authData'
+import { setAuthCookie } from '@payload/auth/authData'
 import { getEnv } from '@payload/env'
-import { cookies } from 'next/headers'
 
-export async function loginWithCode(code: string): Promise<AuthResponse> {
-  const cookieStore = await cookies()
-  const codeVerifier = cookieStore.get('code_verifier')?.value
-
+export async function loginWithCode(code: string, codeVerifier: string): Promise<{ success: boolean }> {
   if (codeVerifier == null) {
     throw new Error('Code verifier not found')
   }
@@ -29,9 +22,11 @@ export async function loginWithCode(code: string): Promise<AuthResponse> {
     method: 'POST',
   })
 
-  const data = await response.json()
+  const body = await response.json()
 
-  await setAuthCookie(data)
+  setAuthCookie(body)
 
-  return data
+  return {
+    success: true,
+  }
 }

@@ -1,5 +1,6 @@
 import { navSorting } from '@payload/payload.nav'
 import type { NavGroupType } from '@payloadcms/ui/shared'
+import type { CollectionSlug, GlobalSlug } from 'payload'
 
 export function sortNavGroups(groups: NavGroupType[]): NavGroupType[] {
   const sortedGroups = groups.toSorted((a, b) => {
@@ -22,12 +23,16 @@ export function sortNavGroups(groups: NavGroupType[]): NavGroupType[] {
     return aIndex - bIndex
   })
 
-  sortedGroups.forEach((group) => {
+  for (const group of sortedGroups) {
     group.entities = group.entities.toSorted((a, b) => {
       const slugOrder = navSorting[group.label.toLocaleLowerCase()]
 
-      const aIndex = slugOrder.findIndex((slug) => slug === a.slug)
-      const bIndex = slugOrder.findIndex((slug) => slug === b.slug)
+      if (slugOrder == null) {
+        return 0
+      }
+
+      const aIndex = slugOrder.indexOf(a.slug as CollectionSlug | GlobalSlug)
+      const bIndex = slugOrder.indexOf(b.slug as CollectionSlug | GlobalSlug)
 
       if (aIndex === -1 && bIndex === -1) {
         return 0
@@ -43,7 +48,7 @@ export function sortNavGroups(groups: NavGroupType[]): NavGroupType[] {
 
       return aIndex - bIndex
     })
-  })
+  }
 
   return sortedGroups
 }

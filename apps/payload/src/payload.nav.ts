@@ -8,13 +8,12 @@ import type {
 } from 'payload'
 
 export const navSorting: Record<string, (CollectionSlug | GlobalSlug)[]> = {
-  pages: [
+  content: [
     'pages',
+    'blogs',
   ],
   forms: [
     'form-hubspot',
-    'form-builder',
-    'form-submission',
   ],
   media: [
     'images',
@@ -26,12 +25,13 @@ export const navSorting: Record<string, (CollectionSlug | GlobalSlug)[]> = {
   ],
   settings: [
     'settings',
+    'tenants',
   ],
 }
 
 export function setCollectionGroups<TType extends CollectionConfig | GlobalConfig>(collectionsAndGlobals: (TType)[]):
 (TType)[] {
-  collectionsAndGlobals.forEach((collectionOrGlobal) => {
+  for (const collectionOrGlobal of collectionsAndGlobals) {
     const foundGroup = Object.keys(navSorting).find((group) =>
       navSorting[group].includes(collectionOrGlobal.slug as CollectionSlug | GlobalSlug))
 
@@ -41,7 +41,7 @@ export function setCollectionGroups<TType extends CollectionConfig | GlobalConfi
         ...collectionOrGlobal.admin,
       }
     }
-  })
+  }
 
   return collectionsAndGlobals
 }

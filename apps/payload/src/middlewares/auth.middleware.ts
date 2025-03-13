@@ -8,7 +8,7 @@ export async function withAuthMiddleware(customMiddleware: CustomMiddleware) {
   if (request.nextUrl.pathname === '/login') {
     return customMiddleware
   }
-  const authData = await getAuthData()
+  const authData = await getAuthData({ req: request, res: response })
 
   if (authData == null) {
     return customMiddleware

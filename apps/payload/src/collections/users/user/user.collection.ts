@@ -3,15 +3,45 @@ import {
   LOCK_TIME,
   MAX_LOGIN_ATTEMPTS,
 } from '@payload/constants/auth.constant'
+import { isAdmin } from '@payload/utils/access/isAdmin.util'
 import { zitadalStrategy } from '@payload/zitadel.auth'
+import { tenantsArrayField } from '@payloadcms/plugin-multi-tenant/fields'
 // import { zitadalStrategy } from '@payload/zitadel.auth'
 import type { CollectionConfig } from 'payload'
+
+const defaultTenantArrayField = tenantsArrayField({
+  arrayFieldAccess: {},
+  rowFields: [
+    {
+      hasMany: true,
+      name: 'roles',
+      defaultValue: [
+        'tenant-viewer',
+      ],
+      options: [
+        'tenant-admin',
+        'tenant-viewer',
+      ],
+      required: true,
+      type: 'select',
+    },
+  ],
+  tenantFieldAccess: {},
+  tenantsArrayFieldName: 'tenants',
+  tenantsArrayTenantFieldName: 'tenant',
+  tenantsCollectionSlug: 'tenants',
+})
 
 export const userCollection: CollectionConfig = {
   access: {
     delete: () => false,
+    read: () => true,
     update: ({ req: { user } }) => {
-      return user?.role === 'admin'
+      if (user == null) {
+        return false
+      }
+
+      return isAdmin(user)
     },
   },
   admin: {
@@ -38,6 +68,7 @@ export const userCollection: CollectionConfig = {
       name: 'role',
       defaultValue: 'user',
       options: [
+        'super-admin',
         'user',
         'admin',
         'editor',
@@ -51,6 +82,12 @@ export const userCollection: CollectionConfig = {
       name: 'addresses',
       relationTo: 'addresses',
       type: 'relationship',
+    },
+    {
+      ...defaultTenantArrayField,
+      admin: {
+        ...defaultTenantArrayField?.admin,
+      },
     },
   ],
   hooks: {

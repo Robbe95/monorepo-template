@@ -1,6 +1,5 @@
 import { withAuthMiddleware } from '@payload/middlewares/auth.middleware'
 import { withCorsMiddleware } from '@payload/middlewares/cors.middleware'
-import { withLoginPageMiddleware } from '@payload/middlewares/login.middleware'
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 
@@ -16,12 +15,7 @@ export default async function middleware(request: NextRequest) {
     response: corsMiddleware.response,
   })
 
-  const authPageMiddleware = await withLoginPageMiddleware({
-    request: authMiddleware.request,
-    response: authMiddleware.response,
-  })
-
-  return authPageMiddleware.response
+  return authMiddleware.response
 }
 export const config = {
   matcher: [

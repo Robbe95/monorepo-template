@@ -4,18 +4,7 @@ import type { Config } from '@repo/payload-types'
 export function pluginMultiTentant() {
   return multiTenantPlugin<Config>({
     collections: {
-      services: {
-        useTenantAccess: true,
-      },
-      tenantFooters: {
-        useTenantAccess: true,
-      },
-      tenantHeaders: {
-        useTenantAccess: true,
-      },
-      tenantPages: {
-        useTenantAccess: true,
-      },
+      blogs: {},
     },
     tenantField: {
       access: {
@@ -24,8 +13,10 @@ export function pluginMultiTentant() {
       },
     },
     tenantsArrayField: {
-      includeDefaultField: true,
+      includeDefaultField: false,
     },
-    userHasAccessToAllTenants: () => true,
+    userHasAccessToAllTenants: (user) => {
+      return user.role === 'super-admin'
+    },
   })
 }

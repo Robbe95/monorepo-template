@@ -1,4 +1,4 @@
-import { getIconFragment } from '@payload/fragments/icon.fragment'
+import { getIconField } from '@payload/fields/media/icon.field'
 import type { Tab } from 'payload'
 
 export const settingsSocialsTab: Tab = {
@@ -25,7 +25,7 @@ export const settingsSocialsTab: Tab = {
               label: 'URL',
               type: 'text',
             },
-            getIconFragment({
+            getIconField({
               name: 'icon',
               label: 'Icon',
             }),

@@ -1,5 +1,7 @@
 /* eslint-disable perfectionist/sort-objects */
 /* eslint-disable node/prefer-global/process */
+import 'dotenv/config'
+
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -9,10 +11,9 @@ import { tasks } from '@payload/jobs/tasks/tasks'
 import { workflows } from '@payload/jobs/workflows/workflows'
 import { migrations } from '@payload/migrations'
 import { setCollectionGroups } from '@payload/payload.nav'
+import { plugins } from '@payload/plugins'
 import { postgresAdapter } from '@payloadcms/db-postgres'
-import { seoPlugin } from '@payloadcms/plugin-seo'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
-import { s3Storage } from '@payloadcms/storage-s3'
 import { buildConfig } from 'payload'
 import { en } from 'payload/i18n/en'
 import { nl } from 'payload/i18n/nl'
@@ -50,7 +51,7 @@ export default buildConfig({
   db: postgresAdapter({
     idType: 'uuid',
     prodMigrations: migrations,
-    push: false,
+    push: true,
     pool: {
       connectionString: process.env.POSTGRES_URI ?? '',
     },
@@ -68,35 +69,15 @@ export default buildConfig({
     ],
   },
   plugins: [
-    seoPlugin({
-      generateDescription: ({ doc }) => doc.excerpt,
-      generateTitle: ({ doc }) => `Website.com — ${doc.title}`,
-      tabbedUI: true,
-      uploadsCollection: 'images',
-    }),
-    s3Storage({
-      collections: {
-        images: true,
-        icons: true,
-      },
-      bucket: process.env.S3_BUCKET as string,
-      config: {
-        credentials: {
-          accessKeyId: process.env.S3_ACCESS_KEY_ID as string,
-          secretAccessKey: process.env.S3_SECRET_ACCESS_KEY as string,
-        },
-        endpoint: process.env.S3_ENDPOINT as string,
-        region: process.env.S3_REGION as string,
-      },
-    }),
+    ...plugins,
   ],
   jobs: {
     tasks,
     workflows,
     deleteJobOnComplete: false,
   },
-
   secret: process.env.PAYLOAD_SECRET ?? '',
+
   sharp,
   typescript: {
     autoGenerate: true,

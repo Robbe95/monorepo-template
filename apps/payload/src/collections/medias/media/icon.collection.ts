@@ -1,3 +1,4 @@
+import { getUploadName } from '@payload/utils/upload/getUploadName.util'
 import type { CollectionConfig } from 'payload'
 
 export const iconCollection: CollectionConfig = {
@@ -34,6 +35,15 @@ export const iconCollection: CollectionConfig = {
         data.content = svgAsString
 
         return data
+      },
+    ],
+    beforeOperation: [
+      (req) => {
+        if (req.operation === 'create') {
+          if (req.req.file) {
+            req.req.file.name = getUploadName(req.req.file.name).fileNameWithExtension
+          }
+        }
       },
     ],
   },

@@ -1,5 +1,11 @@
 import { getEnv } from '@payload/env'
-import { cookies } from 'next/headers'
+import {
+  deleteCookie,
+  getCookie,
+  setCookie,
+} from 'cookies-next'
+import type { NextRequest, NextResponse } from 'next/server'
+// import { useCookies } from 'next-client-cookies'
 
 export interface AuthResponse {
   access_token: string
@@ -25,23 +31,20 @@ export const DEFAULT_SCOPES: string[] = [
   `urn:zitadel:iam:org:id:${env.AUTH_ORGANIZATION_ID}`,
 ]
 
-export async function setAuthCookie(authResponse: AuthResponse) {
-  const cookieStore = await cookies()
-
+export function setAuthCookie(authResponse: AuthResponse) {
   const now = new Date().getTime()
   const expiresIn = authResponse.expires_in
   const expiresAt = now + expiresIn * 1000
 
-  cookieStore.set('access_token', authResponse.access_token)
-  cookieStore.set('refresh_token', authResponse.refresh_token)
-  cookieStore.set('expires_at', expiresAt.toString())
+  setCookie('access_token', authResponse.access_token)
+  setCookie('refresh_token', authResponse.refresh_token)
+  setCookie('expires_at', expiresAt.toString())
 }
 
-export async function getAuthData(): Promise<AuthData | null> {
-  const cookieStore = await cookies()
-  const accessToken = cookieStore.get('access_token')?.value
-  const refreshToken = cookieStore.get('refresh_token')?.value
-  const expiresAt = cookieStore.get('expires_at')?.value
+export async function getAuthData({ req, res }: { req: NextRequest, res: NextResponse }): Promise<AuthData | null> {
+  const accessToken = await getCookie('access_token', { req, res })
+  const refreshToken = await getCookie('refresh_token', { req, res })
+  const expiresAt = await getCookie('expires_at', { req, res })
 
   if (accessToken == null || refreshToken == null || expiresAt == null) {
     return null
@@ -54,10 +57,8 @@ export async function getAuthData(): Promise<AuthData | null> {
   }
 }
 
-export async function removeAuthCookie() {
-  const cookieStore = await cookies()
-
-  cookieStore.delete('access_token')
-  cookieStore.delete('refresh_token')
-  cookieStore.delete('expires_at')
+export function removeAuthCookie() {
+  deleteCookie('access_token')
+  deleteCookie('refresh_token')
+  deleteCookie('expires_at')
 }

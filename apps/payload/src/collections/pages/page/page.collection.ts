@@ -1,6 +1,6 @@
-import { pageBlocks } from '@payload/blocks/page/page.blocks'
-import { getSeoFragment } from '@payload/fragments/seo.fragment'
-import { createExampleJob } from '@payload/jobs/jobs/example/example.job'
+import { pageSeoTab } from '@payload/collections/pages/page/pageSeo.tab'
+import { pageStructureTab } from '@payload/collections/pages/page/pageStructure.tab'
+import { getSlugField } from '@payload/fields/slug/slug.field'
 import type { CollectionConfig } from 'payload'
 
 export const pageCollection: CollectionConfig = {
@@ -19,7 +19,7 @@ export const pageCollection: CollectionConfig = {
     ],
     livePreview: {
       url: ({ data }) => {
-        return `http://localhost:3000/page/${data.slug}`
+        return `http://localhost:3000/${data.slug}`
       },
     },
     useAsTitle: 'title',
@@ -35,58 +35,27 @@ export const pageCollection: CollectionConfig = {
       required: true,
       type: 'text',
     },
-    {
-      name: 'slug',
-      admin: {
-        position: 'sidebar',
-      },
-      localized: true,
-      required: true,
-      type: 'text',
-    },
+    ...getSlugField(),
     {
       tabs: [
-        {
-          fields: [
-            {
-              name: 'blocks',
-              blocks: pageBlocks,
-              localized: true,
-              minRows: 1,
-              type: 'blocks',
-            },
-          ],
-          label: 'Structure',
-        },
-        {
-          name: 'seo',
-          fields: [
-            ...getSeoFragment(),
-          ],
-          label: 'SEO',
-        },
+        pageStructureTab,
+        pageSeoTab,
       ],
       type: 'tabs',
     },
 
   ],
-  hooks: {
-    afterChange: [
-      ({ doc }) => {
-        createExampleJob({
-          title: doc.title,
-        })
-      },
-    ],
-  },
   lockDocuments: {
     duration: 300,
   },
   slug: 'pages',
   versions: {
     drafts: {
-      autosave: true,
+      autosave: {
+        interval: 2000, // ms
+      },
       schedulePublish: true,
     },
+    maxPerDoc: 50, // Max versions saved per document
   },
 }

@@ -44,16 +44,55 @@ export const zitadalStrategy: AuthStrategy = {
           collection: 'users',
           limit: 1,
         })
-        const isFirstUser = existingUsers.docs.length === 0
 
-        await payload.create({
+        const existingTenants = await payload.find({
+          collection: 'tenants',
+          limit: 1,
+        })
+
+        let existingTenant = existingTenants.docs[0]
+        const isFirstUser = existingUsers.docs.length === 0
+        const isFirstTenant = existingTenant == null
+
+        if (isFirstTenant) {
+          existingTenant = await payload.create({
+            collection: 'tenants',
+            data: {
+              title: 'Global',
+            },
+          })
+        }
+
+        const createdUser = await payload.create({
           collection: 'users',
           data: {
             email: userEmail,
             password: 'idc',
-            role: isFirstUser ? 'admin' : 'user',
+            role: isFirstUser ? 'super-admin' : 'user',
+            tenants: [
+              {
+                roles: [
+                  'tenant-admin',
+                ],
+                tenant: existingTenant.id,
+              },
+            ],
           },
         })
+
+        return {
+          user: {
+            id: createdUser.id,
+            collection: 'users',
+            email: createdUser.email,
+            role: createdUser.role,
+            username: createdUser.email,
+          },
+        }
+      }
+
+      if (singleUser.role === 'user') {
+        return USER_NOT_AUTHENTICATED
       }
 
       return {

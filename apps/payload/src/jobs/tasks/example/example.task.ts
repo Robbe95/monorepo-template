@@ -3,8 +3,6 @@ import type { TaskConfig } from 'payload'
 
 export const exampleTask: TaskConfig<'exampleTask'> = {
   handler: ({ input }) => {
-    console.log('input', input)
-
     return {
       output: {
         title: input.title,

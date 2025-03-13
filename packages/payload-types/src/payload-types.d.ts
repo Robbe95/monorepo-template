@@ -77,33 +77,27 @@ export interface Config {
   blocks: {};
   collections: {
     pages: Page;
-    'form-builder': FormBuilder;
-    'form-submission': FormSubmission;
     'form-hubspot': FormHubspot;
     users: User;
     addresses: Address;
     images: Image;
     icons: Icon;
+    tenants: Tenant;
     blogs: Blog;
     'payload-jobs': PayloadJob;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
-  collectionsJoins: {
-    'form-builder': {
-      submissions: 'form-submission';
-    };
-  };
+  collectionsJoins: {};
   collectionsSelect: {
     pages: PagesSelect<false> | PagesSelect<true>;
-    'form-builder': FormBuilderSelect<false> | FormBuilderSelect<true>;
-    'form-submission': FormSubmissionSelect<false> | FormSubmissionSelect<true>;
     'form-hubspot': FormHubspotSelect<false> | FormHubspotSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     addresses: AddressesSelect<false> | AddressesSelect<true>;
     images: ImagesSelect<false> | ImagesSelect<true>;
     icons: IconsSelect<false> | IconsSelect<true>;
+    tenants: TenantsSelect<false> | TenantsSelect<true>;
     blogs: BlogsSelect<false> | BlogsSelect<true>;
     'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -162,8 +156,11 @@ export interface UserAuthOperations {
 export interface Page {
   id: string;
   title: string;
-  slug: string;
-  blocks?: (HeroBlock | CarouselBlock | ColumnBlock | HubspotFormBlock | ImageTextBlock | TextBlock)[] | null;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  blocks?:
+    | (HeroBlock | TextBlock | ColumnBlock | HubspotFormBlock | ImageTextBlock | CarouselBlock | BannerBlock)[]
+    | null;
   seo?: {
     title?: string | null;
     description?: string | null;
@@ -187,10 +184,10 @@ export interface HeroBlock {
     | {
         cta: {
           label: string;
-          type: 'pages' | 'users' | 'external';
-          toPages?: (string | null) | Page;
-          toUsers?: (string | null) | User;
-          toExternal?: string | null;
+          ctaVariant?: ('primary' | 'secondary') | null;
+          ctaType?: ('link' | 'event') | null;
+          link?: LinkField;
+          event?: 'some_form' | null;
         };
         id?: string | null;
       }[]
@@ -202,43 +199,16 @@ export interface HeroBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users".
+ * via the `definition` "LinkField".
  */
-export interface User {
-  id: string;
-  title?: string | null;
-  role: 'user' | 'admin' | 'editor' | 'developer';
-  addresses?: (string | Address)[] | null;
-  updatedAt: string;
-  createdAt: string;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
-  password?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "addresses".
- */
-export interface Address {
-  id: string;
-  label: string;
-  street: string;
-  number: string;
-  box?: string | null;
-  postal_code: string;
-  city: string;
-  region?: string | null;
-  country: string;
-  email?: string | null;
-  phone?: string | null;
-  type?: ('billing' | 'shipping')[] | null;
-  updatedAt: string;
-  createdAt: string;
+export interface LinkField {
+  type?: ('reference' | 'custom') | null;
+  newTab?: boolean | null;
+  reference?: {
+    relationTo: 'pages';
+    value: string | Page;
+  } | null;
+  url?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -303,13 +273,14 @@ export interface Image {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "CarouselBlock".
+ * via the `definition` "TextBlock".
  */
-export interface CarouselBlock {
-  images: (string | Image)[];
+export interface TextBlock {
+  title: string;
+  text: string;
   id?: string | null;
   blockName?: string | null;
-  blockType: 'carousel';
+  blockType: 'text';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -335,10 +306,10 @@ export interface ColumnMultipleTextBlock {
     | {
         cta: {
           label: string;
-          type: 'pages' | 'users' | 'external';
-          toPages?: (string | null) | Page;
-          toUsers?: (string | null) | User;
-          toExternal?: string | null;
+          ctaVariant?: ('primary' | 'secondary') | null;
+          ctaType?: ('link' | 'event') | null;
+          link?: LinkField;
+          event?: 'some_form' | null;
         };
         id?: string | null;
       }[]
@@ -358,10 +329,10 @@ export interface ColumnTextCtaBlock {
     | {
         cta: {
           label: string;
-          type: 'pages' | 'users' | 'external';
-          toPages?: (string | null) | Page;
-          toUsers?: (string | null) | User;
-          toExternal?: string | null;
+          ctaVariant?: ('primary' | 'secondary') | null;
+          ctaType?: ('link' | 'event') | null;
+          link?: LinkField;
+          event?: 'some_form' | null;
         };
         id?: string | null;
       }[]
@@ -404,72 +375,37 @@ export interface ImageTextBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "TextBlock".
+ * via the `definition` "CarouselBlock".
  */
-export interface TextBlock {
+export interface CarouselBlock {
+  images: (string | Image)[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'carousel';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BannerBlock".
+ */
+export interface BannerBlock {
   title: string;
   text: string;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'text';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "form-builder".
- */
-export interface FormBuilder {
-  id: string;
-  title: string;
-  builder?: (FormInputBlock | FormGridBlock)[] | null;
-  submissions?: {
-    docs?: (string | FormSubmission)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "FormInputBlock".
- */
-export interface FormInputBlock {
-  label: string;
-  isRequired: boolean;
-  type?: ('text' | 'email' | 'password' | 'number' | 'date' | 'tel') | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'form-input-block';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "FormGridBlock".
- */
-export interface FormGridBlock {
-  colums: number;
-  blocks?: FormInputBlock[] | null;
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'form-grid-block';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "form-submission".
- */
-export interface FormSubmission {
-  id: string;
-  form: string | FormBuilder;
-  submission?:
+  icon: string | Icon;
+  ctas?:
     | {
-        [k: string]: unknown;
-      }
-    | unknown[]
-    | string
-    | number
-    | boolean
+        cta: {
+          label: string;
+          ctaVariant?: ('primary' | 'secondary') | null;
+          ctaType?: ('link' | 'event') | null;
+          link?: LinkField;
+          event?: 'some_form' | null;
+        };
+        id?: string | null;
+      }[]
     | null;
-  updatedAt: string;
-  createdAt: string;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'banner';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -493,10 +429,68 @@ export interface Icon {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users".
+ */
+export interface User {
+  id: string;
+  title?: string | null;
+  role: 'super-admin' | 'user' | 'admin' | 'editor' | 'developer';
+  addresses?: (string | Address)[] | null;
+  tenants?:
+    | {
+        tenant: string | Tenant;
+        roles: ('tenant-admin' | 'tenant-viewer')[];
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  password?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "addresses".
+ */
+export interface Address {
+  id: string;
+  label: string;
+  street: string;
+  number: string;
+  box?: string | null;
+  postal_code: string;
+  city: string;
+  region?: string | null;
+  country: string;
+  email?: string | null;
+  phone?: string | null;
+  type?: ('billing' | 'shipping')[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tenants".
+ */
+export interface Tenant {
+  id: string;
+  title: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "blogs".
  */
 export interface Blog {
   id: string;
+  tenant?: (string | null) | Tenant;
   title: string;
   slug: string;
   blog: {
@@ -622,14 +616,6 @@ export interface PayloadLockedDocument {
         value: string | Page;
       } | null)
     | ({
-        relationTo: 'form-builder';
-        value: string | FormBuilder;
-      } | null)
-    | ({
-        relationTo: 'form-submission';
-        value: string | FormSubmission;
-      } | null)
-    | ({
         relationTo: 'form-hubspot';
         value: string | FormHubspot;
       } | null)
@@ -648,6 +634,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'icons';
         value: string | Icon;
+      } | null)
+    | ({
+        relationTo: 'tenants';
+        value: string | Tenant;
       } | null)
     | ({
         relationTo: 'blogs';
@@ -706,15 +696,17 @@ export interface PayloadMigration {
 export interface PagesSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
+  slugLock?: T;
   blocks?:
     | T
     | {
         hero?: T | HeroBlockSelect<T>;
-        carousel?: T | CarouselBlockSelect<T>;
+        text?: T | TextBlockSelect<T>;
         column?: T | ColumnBlockSelect<T>;
         'hubspot-form'?: T | HubspotFormBlockSelect<T>;
         'image-text'?: T | ImageTextBlockSelect<T>;
-        text?: T | TextBlockSelect<T>;
+        carousel?: T | CarouselBlockSelect<T>;
+        banner?: T | BannerBlockSelect<T>;
       };
   seo?:
     | T
@@ -741,10 +733,10 @@ export interface HeroBlockSelect<T extends boolean = true> {
           | T
           | {
               label?: T;
-              type?: T;
-              toPages?: T;
-              toUsers?: T;
-              toExternal?: T;
+              ctaVariant?: T;
+              ctaType?: T;
+              link?: T | LinkFieldSelect<T>;
+              event?: T;
             };
         id?: T;
       };
@@ -754,10 +746,21 @@ export interface HeroBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "CarouselBlock_select".
+ * via the `definition` "LinkField_select".
  */
-export interface CarouselBlockSelect<T extends boolean = true> {
-  images?: T;
+export interface LinkFieldSelect<T extends boolean = true> {
+  type?: T;
+  newTab?: T;
+  reference?: T;
+  url?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TextBlock_select".
+ */
+export interface TextBlockSelect<T extends boolean = true> {
+  title?: T;
+  text?: T;
   id?: T;
   blockName?: T;
 }
@@ -802,10 +805,10 @@ export interface ColumnMultipleTextBlockSelect<T extends boolean = true> {
           | T
           | {
               label?: T;
-              type?: T;
-              toPages?: T;
-              toUsers?: T;
-              toExternal?: T;
+              ctaVariant?: T;
+              ctaType?: T;
+              link?: T | LinkFieldSelect<T>;
+              event?: T;
             };
         id?: T;
       };
@@ -826,10 +829,10 @@ export interface ColumnTextCtaBlockSelect<T extends boolean = true> {
           | T
           | {
               label?: T;
-              type?: T;
-              toPages?: T;
-              toUsers?: T;
-              toExternal?: T;
+              ctaVariant?: T;
+              ctaType?: T;
+              link?: T | LinkFieldSelect<T>;
+              event?: T;
             };
         id?: T;
       };
@@ -857,64 +860,37 @@ export interface ImageTextBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "TextBlock_select".
+ * via the `definition` "CarouselBlock_select".
  */
-export interface TextBlockSelect<T extends boolean = true> {
+export interface CarouselBlockSelect<T extends boolean = true> {
+  images?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BannerBlock_select".
+ */
+export interface BannerBlockSelect<T extends boolean = true> {
   title?: T;
   text?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "form-builder_select".
- */
-export interface FormBuilderSelect<T extends boolean = true> {
-  title?: T;
-  builder?:
+  icon?: T;
+  ctas?:
     | T
     | {
-        'form-input-block'?: T | FormInputBlockSelect<T>;
-        'form-grid-block'?: T | FormGridBlockSelect<T>;
-      };
-  submissions?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "FormInputBlock_select".
- */
-export interface FormInputBlockSelect<T extends boolean = true> {
-  label?: T;
-  isRequired?: T;
-  type?: T;
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "FormGridBlock_select".
- */
-export interface FormGridBlockSelect<T extends boolean = true> {
-  colums?: T;
-  blocks?:
-    | T
-    | {
-        'form-input-block'?: T | FormInputBlockSelect<T>;
+        cta?:
+          | T
+          | {
+              label?: T;
+              ctaVariant?: T;
+              ctaType?: T;
+              link?: T | LinkFieldSelect<T>;
+              event?: T;
+            };
+        id?: T;
       };
   id?: T;
   blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "form-submission_select".
- */
-export interface FormSubmissionSelect<T extends boolean = true> {
-  form?: T;
-  submission?: T;
-  updatedAt?: T;
-  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -934,6 +910,13 @@ export interface UsersSelect<T extends boolean = true> {
   title?: T;
   role?: T;
   addresses?: T;
+  tenants?:
+    | T
+    | {
+        tenant?: T;
+        roles?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -1056,9 +1039,19 @@ export interface IconsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tenants_select".
+ */
+export interface TenantsSelect<T extends boolean = true> {
+  title?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "blogs_select".
  */
 export interface BlogsSelect<T extends boolean = true> {
+  tenant?: T;
   title?: T;
   slug?: T;
   blog?: T;

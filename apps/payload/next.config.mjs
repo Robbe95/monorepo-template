@@ -29,4 +29,4 @@ const nextConfig = {
   output: 'standalone',
 }
 
-export default withPayload(nextConfig)
+export default withPayload(nextConfig, { devBundleServerPackages: false })
