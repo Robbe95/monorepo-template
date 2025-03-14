@@ -1,7 +1,7 @@
 {
   "name": "nuxt-layer-template",
   "type": "module",
-  "packageManager": "pnpm@9.15.0",
+  "packageManager": "pnpm@10.6.3",
   "version": "0.0.0",
   "license": "MIT",
   "workspaces": [
@@ -28,7 +28,7 @@
     }
   },
   "dependencies": {
-    "turbo": "^2.3.3"
+    "turbo": "^2.4.4"
   },
   "devDependencies": {
     "vitest": "catalog:"
