@@ -17,8 +17,9 @@
     "generate:schema": "payload-graphql generate:schema",
     "clean": "rm -rf node_modules && rm -rf .output && rm -rf .next && rm -rf .dist",
     "standalone-script": "node ./src/scripts/standalone-script.js",
-    "typecheck": "tsc --noEmit",
-    "mc": "payload migrate:create && payload migrate && pnpm generate:types"
+    "typecheck": "pnpm importmap && tsc --noEmit",
+    "mc": "payload migrate:create && payload migrate && pnpm generate:types",
+    "importmap": "node ./scripts/addTypeAnnotationToImportMap.js"
   },
   "dependencies": {
     "@faceless-ui/window-info": "^3.0.1",

@@ -1,9 +1,6 @@
+import tailwindcss from '@tailwindcss/vite'
+
 export default defineNuxtConfig({
-  build: {
-    transpile: [
-      '@number-flow/vue',
-    ],
-  },
   components: [],
   css: [
     '@wisemen/vue-core/style.css',
@@ -12,6 +9,7 @@ export default defineNuxtConfig({
   experimental: {
     viewTransition: true,
   },
+
   fonts: {
     experimental: {
       processCSSVariables: true,
@@ -37,7 +35,6 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@nuxt/fonts',
     'nuxt-time',
-    'nuxt-tailwindcss4',
     '@nuxtjs/color-mode',
   ],
   runtimeConfig: {
@@ -52,5 +49,10 @@ export default defineNuxtConfig({
       environment: '',
       siteBaseUrl: '',
     },
+  },
+  vite: {
+    plugins: [
+      tailwindcss(),
+    ],
   },
 })

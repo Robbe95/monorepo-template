@@ -106,6 +106,8 @@ export const zitadalStrategy: AuthStrategy = {
       }
     }
     catch (error) {
+      console.error(error)
+
       return USER_NOT_AUTHENTICATED
     }
   },

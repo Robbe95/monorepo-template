@@ -30,6 +30,7 @@
     "@repo/models": "workspace:*",
     "@repo/payload-types": "workspace:*",
     "@repo/utils": "workspace:*",
+    "@tailwindcss/vite": "^4.0.14",
     "@tanstack/vue-query": "^5.67.3",
     "@trpc/client": "^10.45.2",
     "@vueuse/core": "^13.0.0",

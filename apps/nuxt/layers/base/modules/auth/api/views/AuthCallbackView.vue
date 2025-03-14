@@ -40,7 +40,8 @@ async function loginCallback() {
 
     await navigateTo(localeIndexRoute)
   }
-  catch {
+  catch (error) {
+    console.error(error)
     toast.error({
       message: i18n.t('auth.callback.login_error.title'),
     })
