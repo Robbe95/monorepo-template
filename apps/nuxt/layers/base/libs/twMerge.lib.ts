@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/no-keyword-prefix */
 import {
   createTailwindMerge,
   getDefaultConfig,

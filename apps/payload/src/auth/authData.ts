@@ -32,7 +32,7 @@ export const DEFAULT_SCOPES: string[] = [
 ]
 
 export function setAuthCookie(authResponse: AuthResponse) {
-  const now = new Date().getTime()
+  const now = Date.now()
   const expiresIn = authResponse.expires_in
   const expiresAt = now + expiresIn * 1000
 

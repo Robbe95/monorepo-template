@@ -1,8 +1,8 @@
-import {
-  type ErrorMapCtx,
-  z,
-  type ZodIssueOptionalMessage,
+import type {
+  ErrorMapCtx,
+  ZodIssueOptionalMessage,
 } from 'zod'
+import { z } from 'zod'
 
 import { useGlobalI18n } from '~base/composables/i18n/useGlobaI18n'
 

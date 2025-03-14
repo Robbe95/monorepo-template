@@ -57,7 +57,7 @@ export function createHttpZodClient(
     } = options
 
     const data = await fetch<unknown>(url, {
-      ...(config ?? {}),
+      ...config,
       method: 'get',
     })
 
@@ -88,7 +88,7 @@ export function createHttpZodClient(
     } = options
 
     const data = await fetch(url, {
-      ...(config ?? {}),
+      ...config,
       body,
       method: 'post',
     })
@@ -120,7 +120,7 @@ export function createHttpZodClient(
     } = options
 
     const data = await fetch(url, {
-      ...(config ?? {}),
+      ...config,
       body,
       method: 'put',
     })
@@ -152,7 +152,7 @@ export function createHttpZodClient(
     } = options
 
     const data = await fetch(url, {
-      ...(config ?? {}),
+      ...config,
       body,
       method: 'delete',
     })

@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { type Icon, VcIcon } from '@wisemen/vue-core'
+import type { Icon } from '@wisemen/vue-core'
+import { VcIcon } from '@wisemen/vue-core'
 
 import SvgGridBackground from '~base/components/svg/SvgGridBackground.vue'
 

@@ -1,8 +1,7 @@
 import type { SelectItem } from '@wisemen/vue-core'
+import type { ComputedRef, Ref } from 'vue'
 import {
   computed,
-  type ComputedRef,
-  type Ref,
   watch,
 } from 'vue'
 

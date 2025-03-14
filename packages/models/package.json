@@ -9,6 +9,7 @@
   "scripts": {
     "lint": "eslint",
     "ci": "pnpm build",
+    "lint:fix": "eslint --fix",
     "clean": "rm -rf node_modules && rm -rf .output && rm -rf .next && rm -rf .dist",
     "standalone-script": "node ./src/scripts/standalone-script.js",
     "typecheck": "tsc --noEmit"

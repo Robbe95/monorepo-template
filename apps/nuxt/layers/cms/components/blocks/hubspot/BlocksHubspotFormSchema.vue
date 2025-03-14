@@ -27,13 +27,13 @@ const form = useForm({
 
     const reformedData: Record<string, any> = {}
 
-    Object.keys(data).forEach((groupName) => {
+    for (const groupName of Object.keys(data)) {
       const group = data[groupName]
 
-      Object.keys(group).forEach((fieldName) => {
+      for (const fieldName of Object.keys(group)) {
         reformedData[fieldName] = group[fieldName]
-      })
-    })
+      }
+    }
 
     await hubspotFormMutation.mutateAsync({
       formId: props.hubspotForm.id,

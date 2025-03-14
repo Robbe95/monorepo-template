@@ -7,8 +7,8 @@ import { cache } from 'react'
 
 export const getNavPrefs = cache(
   async ({ payload, user }: { payload: Payload, user: User }): Promise<NavPreferences> =>
-    // @ts-expect-error Payload shit
     user
+    // @ts-expect-error - ts mismatch Partial<TextFieldClientProps>
       ? await payload
         .find({
           collection: 'payload-preferences',
@@ -36,5 +36,6 @@ export const getNavPrefs = cache(
           },
         })
         ?.then((res) => res?.docs?.[0]?.value)
+    // @ts-expect-error - ts mismatch Partial<TextFieldClientProps>
       : null,
 )

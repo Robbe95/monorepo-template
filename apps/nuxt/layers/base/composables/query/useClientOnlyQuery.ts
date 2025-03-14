@@ -1,12 +1,12 @@
-import {
-  type DefaultError,
-  type QueryClient,
-  type QueryKey,
-  useQuery,
-  type UseQueryDefinedReturnType,
-  type UseQueryOptions,
-  type UseQueryReturnType,
+import type {
+  DefaultError,
+  QueryClient,
+  QueryKey,
+  UseQueryDefinedReturnType,
+  UseQueryOptions,
+  UseQueryReturnType,
 } from '@tanstack/vue-query'
+import { useQuery } from '@tanstack/vue-query'
 
 export function useClientOnlyQuery<
   TQueryFnData,

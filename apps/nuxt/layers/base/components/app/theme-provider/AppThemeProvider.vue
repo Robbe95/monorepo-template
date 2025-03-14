@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { type DarkModeValue, useDarkMode } from '~base/composables/dark-mode/useDarkMode'
+import type { DarkModeValue } from '~base/composables/dark-mode/useDarkMode'
+import { useDarkMode } from '~base/composables/dark-mode/useDarkMode'
 import {
   injectThemeProviderContext,
   provideThemeProviderContext,

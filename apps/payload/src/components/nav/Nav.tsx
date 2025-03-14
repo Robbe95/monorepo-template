@@ -3,7 +3,7 @@ import './index.css'
 import '@payloadcms/next/css'
 
 import { Logo } from '@payload/components/logo/Logo'
-import { sortNavGroups } from '@payload/utils/sortNavGroups.util'
+import { sortNavGroups } from '@payload/utils/payload/sortNavGroups.util'
 import { Logout } from '@payloadcms/ui'
 import { RenderServerComponent } from '@payloadcms/ui/elements/RenderServerComponent'
 import type { EntityToGroup } from '@payloadcms/ui/shared'

@@ -5,10 +5,11 @@ import {
   setAuthCookie,
 } from '@payload/auth/authData'
 import { getEnv } from '@payload/env'
+import type { NextRequest, NextResponse } from 'next/server'
 
-export async function refreshToken() {
+export async function refreshToken({ req, res }: { req: NextRequest, res: NextResponse }) {
   const env = getEnv()
-  const authData = await getAuthData()
+  const authData = await getAuthData({ req, res })
 
   if (authData == null) {
     throw new Error('Auth data not found')

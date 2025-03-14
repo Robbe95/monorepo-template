@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import type { DropdownMenuItem } from '@wisemen/vue-core'
 import {
-  type DropdownMenuItem,
   VcDropdownMenu,
   VcIcon,
 } from '@wisemen/vue-core'

@@ -1,11 +1,13 @@
+import type {
+  DefaultError,
+  QueryClient,
+  QueryKey,
+  UseQueryDefinedReturnType,
+  UseQueryOptions,
+  UseQueryReturnType,
+} from '@tanstack/vue-query'
 import {
-  type DefaultError,
-  type QueryClient,
-  type QueryKey,
   useQuery as useTanstackQuery,
-  type UseQueryDefinedReturnType,
-  type UseQueryOptions,
-  type UseQueryReturnType,
 } from '@tanstack/vue-query'
 
 import { useClientOnlyQuery } from '~base/composables/query/useClientOnlyQuery'

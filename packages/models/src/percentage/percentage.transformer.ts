@@ -1,7 +1,5 @@
-import {
-  type Percentage,
-  percentageSchema,
-} from './percentage.model'
+import type { Percentage } from './percentage.model'
+import { percentageSchema } from './percentage.model'
 
 export class PercentageTransformer {
   static toPercentage(number: number): Percentage {

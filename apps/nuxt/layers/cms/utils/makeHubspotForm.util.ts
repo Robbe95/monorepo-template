@@ -1,8 +1,8 @@
 import type { HubspotField, HubspotForm } from '@cms/types/hubspotForm.type'
+import type { ZodSchema } from 'zod'
 import {
   z,
   ZodAny,
-  type ZodSchema,
   ZodString,
 } from 'zod'
 

@@ -10,6 +10,7 @@
     "build": "cross-env NODE_OPTIONS=--no-deprecation next build",
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
     "start": "node ./server.js",
+    "lint:fix": "eslint --fix",
     "lint": "eslint",
     "ci": "pnpm build",
     "generate:types": "payload generate:types",

@@ -1,4 +1,9 @@
 export default defineNuxtConfig({
+  build: {
+    transpile: [
+      '@number-flow/vue',
+    ],
+  },
   components: [],
   css: [
     '@wisemen/vue-core/style.css',

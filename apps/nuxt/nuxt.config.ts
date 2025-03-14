@@ -3,15 +3,14 @@ import path from 'node:path'
 
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-07',
-
   alias: {
     '@': path.resolve(__dirname, './disable'),
     '@@': path.resolve(__dirname, './disable'),
     '@trpc-router': path.resolve(__dirname, '../payload/src/trpc/router/trpc.router.ts'),
-    '~~': path.resolve(__dirname, './disable'),
     '~base': path.resolve(__dirname, './layers/base'),
     '~cms': path.resolve(__dirname, './layers/cms'),
     '~root': path.resolve(__dirname, './'),
+    '~~': path.resolve(__dirname, './disable'),
 
   },
 
@@ -24,7 +23,7 @@ export default defineNuxtConfig({
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { name: 'description', content: '', hid: 'description' },
+        { id: 'description', name: 'description', content: '' },
       ],
     },
   },

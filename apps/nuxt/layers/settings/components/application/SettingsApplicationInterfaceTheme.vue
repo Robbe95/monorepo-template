@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import type { RadioGroupItem } from '@wisemen/vue-core'
 import {
   defineStyleConfig,
-  type RadioGroupItem,
   VcRadioGroup,
   VcRadioGroupItem,
 } from '@wisemen/vue-core'

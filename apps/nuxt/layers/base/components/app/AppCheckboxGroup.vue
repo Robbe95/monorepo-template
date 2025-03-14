@@ -1,9 +1,9 @@
 <script lang="ts" setup generic="TValue extends AcceptableValue">
-import {
-  type AcceptableValue,
-  type RadioGroupItem,
-  VcCheckbox,
+import type {
+  AcceptableValue,
+  RadioGroupItem,
 } from '@wisemen/vue-core'
+import { VcCheckbox } from '@wisemen/vue-core'
 import { defineModel } from 'vue'
 
 interface Props {
